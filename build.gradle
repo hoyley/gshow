@@ -1,0 +1,77 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+group = 'hoyle'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springStatemachineVersion', '2.0.1.RELEASE')
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.statemachine:spring-statemachine-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'mysql:mysql-connector-java'
+	compileOnly 'org.projectlombok:lombok:1.18.4'
+	annotationProcessor 'org.projectlombok:lombok:1.18.4'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.statemachine:spring-statemachine-bom:${springStatemachineVersion}"
+	}
+}
+
+task webpack(type: Exec) {
+	workingDir './app'
+		commandLine 'cd'
+	commandLine "npm", "run", "build"
+    doLast {
+        println 'Webpack executed'
+    }
+}
+
+task copyWebPack(type: Copy) {
+	dependsOn 'webpack'
+	from('./app/build')
+	into('src/main/resources/public')
+    doLast {
+        println "Webpack copied to classes folder"
+    }
+}
+
+task cleanPublic(type: Delete) {
+	delete 'src/main/resources/public'
+}
+
+task cleanWebPack(type: Delete) {
+	delete 'app/build'
+}
+
+assemble.dependsOn copyWebPack
+clean.dependsOn cleanPublic
+clean.dependsOn cleanWebPack
