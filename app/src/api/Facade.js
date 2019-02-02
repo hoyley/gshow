@@ -1,20 +1,18 @@
 
-import client from './Client.js'
+import axios from 'axios';
 
 export default {
 
-    allEmployees() {
-        return client({method: 'GET', path: '/api/employees'})
-            .then(r => {
-                return r.entity._embedded.employees
-            });
-    },
+  state() {
+    return axios.get('/state');
+  },
 
-    employee(num) {
-        return client({method: 'GET', path: '/api/employees/' + num})
-            .then(r => {
-                debugger;
-                return r.entity._embedded.employees
-            });
-    }
+  registerPlayer(nickname) {
+    axios({
+      method: 'post',
+      url: '/registerPlayer',
+      headers: { 'content-type': 'text/plain' },
+      data: nickname
+    });
+  }
 }
