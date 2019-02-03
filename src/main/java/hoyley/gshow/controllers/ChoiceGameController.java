@@ -51,7 +51,7 @@ public class ChoiceGameController {
     }
 
     public void startGame() {
-        choiceGame = new ChoiceGame(gameState.popChoiceQuestion(), TimedGameConfig.evenCountDown(5, 500),
+        choiceGame = new ChoiceGame(gameState.popChoiceQuestion(), TimedGameConfig.evenCountDown(10, 500),
                 this::onGameStateChange);
         choiceGame.startGame();
     }

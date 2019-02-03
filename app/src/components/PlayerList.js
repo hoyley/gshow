@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PlayerRegistration from "./PlayerRegistration";
+import './PlayerList.css'
 
 export default class extends Component {
 
@@ -12,12 +13,12 @@ export default class extends Component {
     );
 
     return (
-      <div>
+      <div className="playerList">
         <h1>Registration</h1>
         <ul>{playerList}</ul>
 
         {this.props.myPlayer
-          ? <h3>{`Welcome ${this.props.myPlayer.nickname}`}</h3>
+          ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>
           : <PlayerRegistration/>
         }
       </div>

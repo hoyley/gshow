@@ -1,8 +1,9 @@
 import React from "react";
-import WelcomeScreen from "./Welcome"
-import PlayerList from "./PlayerList"
-import ChoiceGame from "./ChoiceGame"
-import Error from "./Error"
+import WelcomeScreen from "./Welcome";
+import PlayerList from "./PlayerList";
+import ChoiceGame from "./ChoiceGame";
+import Error from "./Error";
+import './Screen.css';
 
 const getMainScreen = (props) => {
   if (props.screen === "Welcome") {
@@ -16,8 +17,8 @@ const getMainScreen = (props) => {
 }
 
 export default (props) => {
-  return <div>
-    <PlayerList players={props.players} myPlayer={props.myPlayer} />
-    { getMainScreen(props) }
+  return <div className="screen">
+    <div className="playerList"><PlayerList players={props.players} myPlayer={props.myPlayer} /></div>
+    <div className="gameArea">{ getMainScreen(props) }</div>
   </div>
 }
