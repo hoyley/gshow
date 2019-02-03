@@ -1,5 +1,3 @@
-import GameTimer from "./GameTimer";
-import ChoiceGameOptions from "./ChoiceGameOptions";
 import React from "react";
 
 const answeredCorrectly = (answer) => {

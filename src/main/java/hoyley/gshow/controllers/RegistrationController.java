@@ -2,7 +2,6 @@ package hoyley.gshow.controllers;
 
 import hoyley.gshow.model.Player;
 import hoyley.gshow.model.RootState;
-import org.hibernate.id.GUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
