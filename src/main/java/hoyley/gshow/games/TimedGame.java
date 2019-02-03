@@ -1,9 +1,14 @@
 package hoyley.gshow.games;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class TimedGame {
+
+    private static final Logger logger = LoggerFactory.getLogger(TimedGame.class);
 
     private final TimedGameConfig config;
     private final Timer timer = new Timer();
@@ -40,7 +45,11 @@ public abstract class TimedGame {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                countDown();
+                try {
+                    countDown();
+                } catch (Exception ex) {
+                    logger.error("Error in background timer.", ex);
+                }
             }
         }, 1000, 1000);
         onStateChanged.run();

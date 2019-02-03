@@ -24,7 +24,7 @@ export default class extends React.Component {
       <ul className="circleContainer">
         {
           this.props.children.map((child, index) =>
-            <li className="circleItem" style={this.getRotateStyle(index)}>
+            <li key={index} className="circleItem" style={this.getRotateStyle(index)}>
               {child}
             </li>
           )

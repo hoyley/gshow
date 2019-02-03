@@ -7,6 +7,7 @@ import hoyley.gshow.model.PlayerAnswer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class ChoiceGame extends TimedGame {
 
@@ -61,17 +62,22 @@ public class ChoiceGame extends TimedGame {
 
     private void reduceOptions() {
         int originalOptions = originalQuestion.getOptions().size();
-        int currentOptions = question.getOptions().size();
+        int currentOptions = (int)question.getOptions().stream().filter(o -> !o.isEliminated()).count();
         int reducedOptions = Math.max(optionReduction.compute(originalOptions, getTimeFraction()), 1);
         int numOptionsToRemove = Math.max(currentOptions - reducedOptions, 0);
 
         for (int i = 0; i < numOptionsToRemove; i++) {
-            int answerIndex = question.getOptions().indexOf(question.getAnswer());
+            int answerIndex = question.getOptions().stream()
+                .map(o -> o.getOption()).collect(Collectors.toList())
+                .indexOf(question.getAnswer());
+            
             int indexToRemove;
             do
                 indexToRemove = random.nextInt(question.getOptions().size());
-            while (indexToRemove == answerIndex);
-            question.getOptions().remove(indexToRemove);
+            while (indexToRemove == answerIndex ||
+                question.getOptions().get(indexToRemove).isEliminated());
+            
+            question.getOptions().get(indexToRemove).setEliminated(true);
         }
     }
 

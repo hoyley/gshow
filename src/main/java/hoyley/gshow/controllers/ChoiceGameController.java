@@ -53,7 +53,7 @@ public class ChoiceGameController {
 
     public void startGame() {
         choiceGame = new ChoiceGame(gameState.popChoiceQuestion(),
-            TimedGameConfig.evenCountDown(10, 500),
+            TimedGameConfig.evenCountDown(20, 500),
             TimedGame.DecreaseFunction::even,
             TimedGame.DecreaseFunction.evenByPercentage(0.25),
             this::onGameStateChange);

@@ -1,0 +1,13 @@
+
+.optionAvailable {
+    background-color: grey;
+}
+
+.optionMyChoice {
+    color: green;
+
+}
+
+.optionEliminated {
+    text-decoration: line-through;
+}

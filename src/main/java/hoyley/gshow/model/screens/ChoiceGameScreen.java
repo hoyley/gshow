@@ -1,5 +1,6 @@
 package hoyley.gshow.model.screens;
 
+import hoyley.gshow.model.ChoiceOption;
 import hoyley.gshow.model.GameStatus;
 import hoyley.gshow.model.PlayerAnswer;
 import hoyley.gshow.model.Screen;
@@ -11,12 +12,11 @@ import java.util.*;
 public class ChoiceGameScreen extends Screen {
 
     private String question;
-    private List<String> options;
+    private List<ChoiceOption> options;
     private Collection<PlayerAnswer> playerAnswers;
     private String answer;
     private GameStatus status;
-
-
+    
     public ChoiceGameScreen() {
         setName("ChoiceGame");
         status = new GameStatus();

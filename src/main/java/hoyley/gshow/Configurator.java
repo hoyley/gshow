@@ -24,32 +24,32 @@ public class Configurator {
     public void configure() {
         gameState.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many apples?");
-            setAnswer("4");
-            setOptions(Arrays.asList("1", "2", "3", "4"));
+            setAnswer("3");
+            setOptionStrings(Arrays.asList("1", "2", "3", "4"));
         }});
 
         gameState.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
-            setOptions(Arrays.asList("1", "2", "3", "4", "5"));
+            setOptionStrings(Arrays.asList("1", "2", "3", "4", "5"));
         }});
 
         gameState.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
-            setOptions(Arrays.asList("1", "2", "3", "4", "5", "6"));
+            setOptionStrings(Arrays.asList("1", "2", "3", "4", "5", "6"));
         }});
 
         gameState.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
-            setOptions(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
+            setOptionStrings(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
         }});
 
         gameState.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
-            setOptions(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
+            setOptionStrings(Arrays.asList("3", "There are two apples", "There are two apples", "There are two apples", "There are two apples", "6", "7", "8", "9", "10"));
         }});
         
         rootState.getRegisteredPlayers().add(new Player() {{

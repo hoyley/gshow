@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
-import facade from '../api/Facade'
-import CircleContainer from './controls/CircleContainer'
+import React, { Component } from 'react';
+import facade from '../api/Facade';
+import CircleContainer from './controls/CircleContainer';
+import './ChoiceGameOptions.css';
 
 export default class extends Component {
 
   handleChoice(option) {
-    this.setState({ chosen: option });
-    facade.choiceGameAnswer(option);
+    if (!this.playerMadeChoice()) {
+      this.setState({chosen: option});
+      facade.choiceGameAnswer(option);
+    }
   }
 
   playerMadeChoice() {
@@ -18,18 +21,29 @@ export default class extends Component {
     return this.playerMadeChoice() && this.state && this.state.chosen;
   }
 
+  getClassName(option) {
+    let className = "";
+
+    if (option.eliminated) {
+      className += " optionEliminated";
+    } else if (!this.playerMadeChoice()) {
+      className += " optionAvailable";
+    } 
+
+    if (this.playerSelectedOption(option) === option.option) {
+      className += " optionMyChoice";
+    }
+    return className;
+  }
+
   render() {
-    const options = this.props.options.map(option =>
-      !this.playerMadeChoice()
-        ? <button key={option} onClick={() => this.handleChoice(option)}>{option}</button>
-        : this.playerSelectedOption(option)
-          ? <div key={option}><b>{option}</b></div>
-          : <div key={option}>{option}</div>
-    );
-    
     return (
       <CircleContainer>
-        {options}
+        {
+          this.props.options.map(option =>
+          <div className={this.getClassName(option)}
+               onClick={() => this.handleChoice(option.option)}>{option.option}</div>)
+        }
       </CircleContainer>
     );
   }
