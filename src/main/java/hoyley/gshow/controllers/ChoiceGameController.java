@@ -1,6 +1,7 @@
 package hoyley.gshow.controllers;
 
 import hoyley.gshow.games.ChoiceGame;
+import hoyley.gshow.games.TimedGame;
 import hoyley.gshow.games.TimedGameConfig;
 import hoyley.gshow.model.GameState;
 import hoyley.gshow.model.Player;
@@ -51,8 +52,11 @@ public class ChoiceGameController {
     }
 
     public void startGame() {
-        choiceGame = new ChoiceGame(gameState.popChoiceQuestion(), TimedGameConfig.evenCountDown(10, 500),
-                this::onGameStateChange);
+        choiceGame = new ChoiceGame(gameState.popChoiceQuestion(),
+            TimedGameConfig.evenCountDown(10, 500),
+            TimedGame.DecreaseFunction::even,
+            TimedGame.DecreaseFunction.evenByPercentage(0.25),
+            this::onGameStateChange);
         choiceGame.startGame();
     }
 
@@ -84,12 +88,12 @@ public class ChoiceGameController {
                     gameComplete();
                 }
             },
-            GAME_OVER_DELAY_MILLIS);
+            milliDelay);
     }
 
     private void gameComplete() {
         choiceGame.getAnswers().values().stream()
-            .filter(a -> a.isCorrect())
+            .filter(answer -> answer.isCorrect())
             .forEach(answer -> {
                 state.getRegisteredPlayers().stream()
                     .filter(player -> player.getId().equals(answer.getId()))

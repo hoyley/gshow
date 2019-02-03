@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import facade from "../api/Facade";
 import './Welcome.css';
-import FancyButton from './FancyButton.js';
+import FancyButton from './controls/FancyButton.js';
 
 export default class extends Component {
 
