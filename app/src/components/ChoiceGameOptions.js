@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import facade from '../api/Facade'
+import CircleContainer from './controls/CircleContainer'
 
 export default class extends Component {
 
@@ -27,9 +28,9 @@ export default class extends Component {
     );
     
     return (
-      <ul>
+      <CircleContainer>
         {options}
-      </ul>
+      </CircleContainer>
     );
   }
 
