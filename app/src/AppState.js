@@ -12,6 +12,8 @@ export default class {
     this.players = [];
     this.playerId = null;
     this.myPlayer = null;
+    this.gameConfig = null;
+    this.gameStatus = null;
 
     if (!suppress) {
       this.onChange();
@@ -38,6 +40,8 @@ export default class {
     }
 
     this.screen = state.screen.name;
+    this.gameConfig = state.screen;
+    this.gameStatus = state.screen.status;  
 
     if (state.registeredPlayers) {
       this.players = state.registeredPlayers;

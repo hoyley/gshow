@@ -14,5 +14,18 @@ export default {
       headers: { 'content-type': 'text/plain' },
       data: nickname
     });
+  },
+
+  startGame() {
+    axios.get('/startGame');
+  },
+
+  choiceGameAnswer(choice) {
+    axios({
+      method: 'post',
+      url: '/game/choice',
+      headers: { 'content-type': 'text/plain' },
+      data: choice
+    });
   }
 }

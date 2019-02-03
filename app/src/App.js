@@ -21,8 +21,7 @@ class App extends Component {
 
   render() {
     return (
-      <Screen screen={this.state.appState.screen} players={this.state.appState.players}
-        myPlayer={this.state.appState.myPlayer} />
+      <Screen {...this.state.appState} />
     );
   }
 }

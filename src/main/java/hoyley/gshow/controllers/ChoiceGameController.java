@@ -3,16 +3,26 @@ package hoyley.gshow.controllers;
 import hoyley.gshow.games.ChoiceGame;
 import hoyley.gshow.games.TimedGameConfig;
 import hoyley.gshow.model.GameState;
+import hoyley.gshow.model.Player;
+import hoyley.gshow.model.PlayerAnswer;
 import hoyley.gshow.model.RootState;
 import hoyley.gshow.model.screens.ChoiceGameScreen;
+import hoyley.gshow.model.screens.WelcomeScreen;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Timer;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/game/choice")
 public class ChoiceGameController {
 
+    private static final int GAME_OVER_DELAY_MILLIS = 5000;
     private final RootState state;
     private final GameState gameState;
     private ChoiceGame choiceGame;
@@ -23,8 +33,25 @@ public class ChoiceGameController {
         this.gameState = gameState;
     }
 
+    @PostMapping
+    public void submitAnswer(@RequestBody String answer, HttpServletRequest request) {
+        if (choiceGame == null) {
+            throw new RuntimeException("Submitted answer but no game in progress");
+        }
+
+        Player player = state.getRegisteredPlayers().stream()
+            .filter(p -> p.getSessionId().equals(request.getSession().getId()))
+            .findFirst().orElse(null);
+
+        if (player == null) {
+            throw new RuntimeException("Player does not exist for this session.");
+        }
+
+        choiceGame.submitAnswer(answer, player);
+    }
+
     public void startGame() {
-        choiceGame = new ChoiceGame(gameState.popChoiceQuestion(), TimedGameConfig.evenCountDown(20, 500),
+        choiceGame = new ChoiceGame(gameState.popChoiceQuestion(), TimedGameConfig.evenCountDown(5, 500),
                 this::onGameStateChange);
         choiceGame.startGame();
     }
@@ -33,14 +60,49 @@ public class ChoiceGameController {
         ChoiceGameScreen screen = new ChoiceGameScreen();
         screen.setQuestion(choiceGame.getQuestion().getQuestion());
         screen.setOptions(choiceGame.getQuestion().getOptions());
-        screen.setRemainingPoints(choiceGame.getCurrentPoints());
-        screen.setRemainingTime(choiceGame.getSecondsRemaining());
-        screen.setGameOver(choiceGame.isGameOver());
+        screen.getStatus().setRemainingPoints(choiceGame.getCurrentPoints());
+        screen.getStatus().setRemainingTime(choiceGame.getSecondsRemaining());
+        screen.getStatus().setGameOver(choiceGame.isGameOver());
 
         if (choiceGame.isGameOver()) {
             screen.setAnswer(choiceGame.getQuestion().getAnswer());
+            screen.setPlayerAnswers(choiceGame.getAnswers().values());
+            endGame(GAME_OVER_DELAY_MILLIS);
+        } else {
+            screen.setPlayerAnswers(choiceGame.getAnswers().values().stream()
+                .map(p -> p.cloneSecret())
+                .collect(Collectors.toList()));
         }
         state.setScreen(screen);
     }
+
+    private void endGame(int milliDelay) {
+        new Timer().schedule(
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    gameComplete();
+                }
+            },
+            GAME_OVER_DELAY_MILLIS);
+    }
+
+    private void gameComplete() {
+        choiceGame.getAnswers().values().stream()
+            .filter(a -> a.isCorrect())
+            .forEach(answer -> {
+                state.getRegisteredPlayers().stream()
+                    .filter(player -> player.getId().equals(answer.getId()))
+                    .forEach(player -> {
+                        player.setScore(player.getScore() + answer.getPoints());
+                    });
+            });
+
+        state.setScreen(new WelcomeScreen());
+
+        choiceGame = null;
+    }
+
+
 
 }

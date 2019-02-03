@@ -2,7 +2,7 @@ package hoyley.gshow.controllers;
 
 import hoyley.gshow.Configurator;
 import hoyley.gshow.model.RootState;
-import hoyley.gshow.model.screens.RegistrationScreen;
+import hoyley.gshow.model.screens.WelcomeScreen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ public class GameShowController {
         Configurator configurator) {
         this.state = state;
         this.choiceGameController = choiceGameController;
-        state.setScreen(new RegistrationScreen());
+        state.setScreen(new WelcomeScreen());
 
         configurator.configure();
     }

@@ -34,6 +34,24 @@ public class Configurator {
             setOptions(Arrays.asList("1", "2", "3", "4"));
         }});
 
+        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+            setQuestion("How many Oranges?");
+            setAnswer("3");
+            setOptions(Arrays.asList("1", "2", "3", "4"));
+        }});
+
+        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+            setQuestion("How many Oranges?");
+            setAnswer("3");
+            setOptions(Arrays.asList("1", "2", "3", "4"));
+        }});
+
+        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+            setQuestion("How many Oranges?");
+            setAnswer("3");
+            setOptions(Arrays.asList("1", "2", "3", "4"));
+        }});
+        
         rootState.getRegisteredPlayers().add(new Player() {{
             setId("lskadjfas");
             setNickname("Default Player");

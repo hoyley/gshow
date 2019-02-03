@@ -7,7 +7,7 @@ public abstract class TimedGame {
 
     private final TimedGameConfig config;
     private final Timer timer = new Timer();
-    private final Runnable onStateChanged;
+    protected final Runnable onStateChanged;
     private int secondsRemaining;
     private int currentPoints;
     private boolean isGameOver = false;
@@ -23,6 +23,9 @@ public abstract class TimedGame {
         return secondsRemaining;
     }
 
+    public int getSecondsElapsed() {
+        return config.getSeconds() - secondsRemaining;
+    }
     public int getCurrentPoints() {
         return currentPoints;
     }
