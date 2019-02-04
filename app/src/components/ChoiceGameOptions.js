@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import facade from '../api/Facade';
 import CircleContainer from './controls/CircleContainer';
 import './ChoiceGameOptions.css';
+import GameTimer from "./GameTimer";
 
 export default class extends Component {
 
@@ -38,13 +39,18 @@ export default class extends Component {
 
   render() {
     return (
-      <CircleContainer>
-        {
-          this.props.options.map(option =>
-          <div className={this.getClassName(option)}
-               onClick={() => this.handleChoice(option.option)}>{option.option}</div>)
-        }
-      </CircleContainer>
+      <div>
+        <div className="timer">
+          <GameTimer {...this.props.gameStatus} />
+        </div>
+        <CircleContainer>
+          {
+            this.props.options.map(option =>
+            <div className={this.getClassName(option)}
+                 onClick={() => this.handleChoice(option.option)}>{option.option}</div>)
+          }
+        </CircleContainer>
+      </div>
     );
   }
 

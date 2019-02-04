@@ -11,3 +11,9 @@
 .optionEliminated {
     text-decoration: line-through;
 }
+
+.timer {
+    position: absolute;
+    margin-left: 5em;
+    margin-top: 5em;
+}

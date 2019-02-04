@@ -1,9 +1,22 @@
 import React from "react";
+import Countdown from './controls/Countdown.js';
 
-export default (props) => {
-  return <ul>
-    <li>{ "Remaining Time: " + props.remainingTime}</li>
-    <li>{ "Remaining Points: " + props.remainingPoints}</li>
-    <li>{ "Game Over: " + props.gameOver}</li>
-  </ul>
+export default class extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      remainingTime: 10
+    }
+  }
+  componentDidMount() {
+    this.setState({ time: this.props.remainingTime })
+  }
+  
+  render() {
+    const time = this.state && this.state.time
+    return <div>
+      <Countdown remaining={time} size="100"/>
+    </div>
+  }
 }

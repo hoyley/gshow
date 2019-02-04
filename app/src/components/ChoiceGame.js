@@ -1,5 +1,4 @@
 import React from "react";
-import GameTimer from "./GameTimer";
 import ChoiceGameOptions from './ChoiceGameOptions';
 import ChoiceGameAnswer from './ChoiceGameAnswer';
 
@@ -12,15 +11,13 @@ export default (props) => {
 
   return <div>
     <h1>Choice Game</h1>
-    <GameTimer {...props.gameStatus} />
-
     <h2>{props.gameConfig.question}</h2>
 
     {
       props.gameConfig.status.gameOver
         ? <ChoiceGameAnswer myAnswer={getMyAnswer(props)} actualAnswer={props.gameConfig.answer} />
         : <ChoiceGameOptions options={props.gameConfig.options} playerAnswers={props.gameConfig.playerAnswers}
-                             myPlayer={props.myPlayer}/>
+                             myPlayer={props.myPlayer} gameStatus={props.gameStatus} />
 
     }
   </div>
