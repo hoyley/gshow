@@ -9,7 +9,7 @@ export default class extends Component {
   handleChoice(option) {
     if (!this.playerMadeChoice()) {
       this.setState({chosen: option});
-      facade.choiceGameAnswer(option);
+      facade.choiceGameAnswer(option.option);
     }
   }
 
@@ -19,21 +19,22 @@ export default class extends Component {
   }
 
   playerSelectedOption(option) {
-    return this.playerMadeChoice() && this.state && this.state.chosen;
+    return this.playerMadeChoice() && this.state && this.state.chosen && this.state.chosen.option === option.option;
+  }
+
+  optionDisabled(option) {
+    return this.playerMadeChoice() || option.eliminated;
   }
 
   getClassName(option) {
-    let className = "";
+    let className = "option";
 
-    if (option.eliminated) {
-      className += " optionEliminated";
-    } else if (!this.playerMadeChoice()) {
-      className += " optionAvailable";
-    } 
-
-    if (this.playerSelectedOption(option) === option.option) {
+    if (this.playerSelectedOption(option)) {
       className += " optionMyChoice";
+    } else if (option.eliminated) {
+      className += " optionEliminated";
     }
+    
     return className;
   }
 
@@ -47,7 +48,9 @@ export default class extends Component {
           {
             this.props.options.map(option =>
             <div className={this.getClassName(option)}
-                 onClick={() => this.handleChoice(option.option)}>{option.option}</div>)
+                 onClick={() => this.handleChoice(option)}
+                 disabled={this.optionDisabled(option)}>{option.option}
+             </div>)
           }
         </CircleContainer>
       </div>

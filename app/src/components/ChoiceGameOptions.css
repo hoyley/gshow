@@ -1,19 +1,51 @@
 
-.optionAvailable {
-    background-color: grey;
+.option {
+    color: #404040;
+
 }
 
-.optionMyChoice {
-    color: green;
+.option:hover:not([disabled]) {
+    font-weight: 700;
+    color: black !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
+}
 
+.option:not([disabled]) {
+    border: none;
+    background: #404040;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 20px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.option[disabled] {
+    padding: 20px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
 }
 
 .optionEliminated {
     text-decoration: line-through;
+
+}
+
+.optionMyChoice {
+    color: green !important;
 }
 
 .timer {
     position: absolute;
-    margin-left: 5em;
-    margin-top: 5em;
+    margin-left: 7em;
+    margin-top: 7em;
 }
