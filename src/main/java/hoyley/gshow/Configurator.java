@@ -13,6 +13,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -76,11 +77,11 @@ public class Configurator {
 
     public void configureFromResources() {
         try {
-            File file = new ClassPathResource("ChoiceQuestions.txt").getFile();
+            InputStream stream = new ClassPathResource("ChoiceQuestions.txt").getInputStream();
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = null;
 
-            node = mapper.readTree(file);
+            node = mapper.readTree(stream);
             configureFromJson(node);
         } catch (IOException ex) {
             throw new RuntimeException("Error reading json file.", ex);
