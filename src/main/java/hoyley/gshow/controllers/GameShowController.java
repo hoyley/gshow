@@ -20,7 +20,7 @@ public class GameShowController {
         this.choiceGameController = choiceGameController;
         state.setScreen(new WelcomeScreen());
 
-        configurator.configure();
+        configurator.configureFromResources();
     }
 
     @RequestMapping("/state")

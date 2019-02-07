@@ -5,8 +5,8 @@ export default class extends React.Component {
 
   getRotateStyle(i) {
 
-    let type = 1, //circle type - 1 whole, 0.5 half, 0.25 quarter
-      radius = '10em', //distance from center
+    let type = .6, //circle type - 1 whole, 0.5 half, 0.25 quarter
+      radius = '12em', //distance from center
       start = -90, //shift start from 0
       numberOfElements = this.props.children.length,
       slice = 360 * type / numberOfElements;

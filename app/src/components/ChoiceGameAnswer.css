@@ -1,0 +1,16 @@
+
+.answer {
+    font: 600 1.5em/1 'Raleway', sans-serif;
+    color: rgba(0,0,0,.5);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    width: 100%;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    transition: all 1s ease 0s;
+}
+
+.answerMessage {
+
+}

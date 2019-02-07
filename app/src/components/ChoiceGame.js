@@ -1,7 +1,7 @@
 import React from "react";
 import ChoiceGameOptions from './ChoiceGameOptions';
 import ChoiceGameAnswer from './ChoiceGameAnswer';
-
+import './ChoiceGame.css'
 
 const getMyAnswer = (props) => {
   return props.gameConfig.status.gameOver && props.gameConfig.playerAnswers.find(p => p.id === props.myPlayer.id);
@@ -10,8 +10,7 @@ const getMyAnswer = (props) => {
 export default (props) => {
 
   return <div>
-    <h1>Choice Game</h1>
-    <h2>{props.gameConfig.question}</h2>
+    <h2 className="questionText">{props.gameConfig.question}</h2>
 
     {
       props.gameConfig.status.gameOver

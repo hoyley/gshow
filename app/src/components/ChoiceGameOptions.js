@@ -13,9 +13,13 @@ export default class extends Component {
     }
   }
 
+  playerLoggedIn() {
+    return !!this.props.myPlayer;
+  }
+
   playerMadeChoice() {
     return this.props.playerAnswers &&
-      this.props.playerAnswers.some(ans => ans.id === this.props.myPlayer.id);
+      this.props.playerAnswers.some(ans => this.playerLoggedIn() && ans.id === this.props.myPlayer.id);
   }
 
   playerSelectedOption(option) {
@@ -23,7 +27,7 @@ export default class extends Component {
   }
 
   optionDisabled(option) {
-    return this.playerMadeChoice() || option.eliminated;
+    return !this.playerLoggedIn() || this.playerMadeChoice() || option.eliminated;
   }
 
   getClassName(option) {
