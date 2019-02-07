@@ -54,14 +54,14 @@ task copyWebPack(type: Copy) {
     }
 }
 
-task cleanPublic(type: Delete) {
-	delete 'src/main/resources/public'
-}
-
-task cleanWebPack(type: Delete) {
-	delete 'app/build'
-}
-
-assemble.dependsOn copyWebPack
-clean.dependsOn cleanPublic
-clean.dependsOn cleanWebPack
+//task cleanPublic(type: Delete) {
+//	delete 'src/main/resources/public'
+//}
+//
+//task cleanWebPack(type: Delete) {
+//	delete 'app/build'
+//}
+//
+//assemble.dependsOn copyWebPack
+//clean.dependsOn cleanPublic
+//clean.dependsOn cleanWebPack
