@@ -54,14 +54,30 @@ task copyWebPack(type: Copy) {
     }
 }
 
-//task cleanPublic(type: Delete) {
-//	delete 'src/main/resources/public'
-//}
-//
-//task cleanWebPack(type: Delete) {
-//	delete 'app/build'
-//}
-//
-//assemble.dependsOn copyWebPack
-//clean.dependsOn cleanPublic
-//clean.dependsOn cleanWebPack
+task cleanPublic(type: Delete) {
+	delete 'src/main/resources/public'
+}
+
+task cleanWebPack(type: Delete) {
+	delete 'app/build'
+}
+
+assemble.dependsOn copyWebPack
+clean.dependsOn cleanPublic
+clean.dependsOn cleanWebPack
+
+task buildAll(type: GradleBuild) {
+	tasks = ['clean', 'cleanPublic', 'cleanWebPack', 'webpack', 'copyWebPack', 'build', 'bootJar', 'dockerBuild']
+}
+
+task dockerBuild(type: Exec) {
+	commandLine 'docker', 'build', '-t', 'hoyley/gshow', '.'
+}
+
+task dockerRun(type: Exec) {
+	commandLine 'docker', 'run', '-p', '127.0.0.1:80:8080', '--rm', 'hoyley/gshow'
+}
+
+task buildAndRunDocker(type: GradleBuild) {
+	tasks = ['buildAll', 'dockerRun']
+}

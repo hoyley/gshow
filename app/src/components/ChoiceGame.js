@@ -4,7 +4,7 @@ import ChoiceGameAnswer from './ChoiceGameAnswer';
 import './ChoiceGame.css'
 
 const getMyAnswer = (props) => {
-  return props.gameConfig.status.gameOver && props.gameConfig.playerAnswers.find(p => p.id === props.myPlayer.id);
+  return props.gameConfig.status.gameOver && props.myPlayer && props.gameConfig.playerAnswers.find(p => p.id === props.myPlayer.id);
 };
 
 export default (props) => {
