@@ -77,7 +77,7 @@ public class Configurator {
 
     public void configureFromResources() {
         try {
-            InputStream stream = new ClassPathResource("ChoiceQuestions.txt").getInputStream();
+            InputStream stream = getClass().getClassLoader().getResourceAsStream("ChoiceQuestions.txt");
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = null;
 
