@@ -60,7 +60,7 @@ public class Configurator {
             setAnswer("3");
             setOptionStrings(Arrays.asList("3", "There are two apples", "There are two apples", "There are two apples", "There are two apples", "6", "7", "8", "9", "10"));
         }});
-        
+
         rootState.getRegisteredPlayers().add(new Player() {{
             setId("lskadjfas");
             setNickname("Default Player");
@@ -75,12 +75,11 @@ public class Configurator {
     }
 
     public void configureFromResources() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("ChoiceQuestions.txt").getFile());
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = null;
-
         try {
+            File file = new ClassPathResource("ChoiceQuestions.txt").getFile();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = null;
+
             node = mapper.readTree(file);
             configureFromJson(node);
         } catch (IOException ex) {
@@ -93,7 +92,7 @@ public class Configurator {
         if (node.isArray() == false) {
             throw new RuntimeException("Expected outer array.");
         }
-               
+
         List<ChoiceQuestion> questions = new LinkedList<>();
 
         node.forEach(question -> {
