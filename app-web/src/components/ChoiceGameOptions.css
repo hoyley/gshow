@@ -7,7 +7,7 @@
 .option:hover:not([disabled]) {
     font-weight: 700;
     color: black !important;
-    letter-spacing: 3px;
+    letter-spacing: 10px;
     background: none;
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
@@ -46,7 +46,4 @@
 }
 
 .timer {
-    position: absolute;
-    margin-left: 4em;
-    margin-top: 8em;
 }

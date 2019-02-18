@@ -1,4 +1,9 @@
 
 .playerList {
+    background-color: black;
     color: white;
+}
+
+.playerListItem {
+    color: black;
 }

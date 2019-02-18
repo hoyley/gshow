@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import service from '../service/GshowService'
+import service from '../service/GshowService';
+import {Form, Button} from 'react-bootstrap';
+import './PlayerRegistration.css';
+
 export default class extends Component {
 
   constructor(props) {
@@ -22,13 +25,19 @@ export default class extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.name} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <Form onSubmit={this.handleSubmit}
+            className="registrationForm">
+        <Form.Label className="registrationLabel">Register:</Form.Label>
+        <Form.Control className="registrationName"
+                      type="text"
+                      placeholder="Your Name"
+                      value={this.state.name}
+                      onChange={this.handleChange} />
+        <Button className="registrationSubmit"
+                variant="primary"
+                type="submit">Submit</Button>
+      </Form>
+
     );
   }
 }

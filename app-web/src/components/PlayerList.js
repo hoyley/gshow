@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PlayerRegistration from "./PlayerRegistration";
+import {ListGroup} from 'react-bootstrap'
 import './PlayerList.css'
 
 export default class extends Component {
@@ -9,13 +10,13 @@ export default class extends Component {
     const players = this.props.players || [];
 
     const playerList = players.map(player =>
-      <li key={player.id}>{player.nickname} ({player.score})</li>
+      <ListGroup.Item className="playerListItem">{player.nickname} ({player.score})</ListGroup.Item>
     );
 
     return (
       <div className="playerList">
         <h1>Registration</h1>
-        <ul>{playerList}</ul>
+        <ListGroup>{playerList}</ListGroup>
 
         {this.props.myPlayer
           ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>

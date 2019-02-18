@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import service from '../service/GshowService';
-import CircleContainer from './controls/CircleContainer';
+import GameTimer from "./controls/FlatGameTimer";
+import {ListGroup, Button} from 'react-bootstrap';
+
 import './ChoiceGameOptions.css';
-import GameTimer from "./controls/GameTimer";
 
 export default class extends Component {
 
@@ -45,19 +46,18 @@ export default class extends Component {
   render() {
     return (
       <div>
-        <div className="timer">
-          <GameTimer {...this.props.gameStatus} />
-        </div>
-        <CircleContainer>
+        <GameTimer className="timer" {...this.props.gameStatus} />
+        <ListGroup>
           {
             this.props.options.map(option =>
-              <div className={this.getClassName(option)}
-                   onClick={() => this.handleChoice(option)}
-                   disabled={this.optionDisabled(option)}>{option.option}
-               </div>
+              <ListGroup.Item>
+                <Button variant="light" className={this.getClassName(option)}
+                        onClick={() => this.handleChoice(option)}
+                        disabled={this.optionDisabled(option)}>{option.option}</Button>
+               </ListGroup.Item>
             )
           }
-        </CircleContainer>
+        </ListGroup>
       </div>
     );
   }

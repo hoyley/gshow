@@ -2,28 +2,34 @@ import React from "react";
 import WelcomeScreen from "./Welcome";
 import PlayerList from "./PlayerList";
 import ChoiceGame from "./ChoiceGame";
-import Error from "./Error";
-import './Screen.css';
+  import './Screen.css';
+import {Container, Row, Col} from 'react-bootstrap';
 
 const getMainScreen = (props) => {
-  if (props.screen === "Welcome") {
-    return <WelcomeScreen />;
-  } else if (props.screen === "ChoiceGame") {
+  if (props.screen === "ChoiceGame") {
     return <ChoiceGame gameStatus={props.gameStatus}
                        gameConfig={props.gameConfig}
                        players={props.players}
                        myPlayer={props.myPlayer} />;
   } else {
-    return <Error msg={"Unknown screen: " + props.screen} />
+    if (props.screen !== "Welcome") {
+      console.log("Can't render screen named: " + props.screen);
+    }
+    return <WelcomeScreen/>;
   }
 }
 
 export default (props) => {
-  return <div className="screen">
-    <div className="playerList">
-      <PlayerList players={props.players}
-                  myPlayer={props.myPlayer} />
-    </div>
-    <div className="gameArea">{ getMainScreen(props) }</div>
-  </div>
+  return <Container fluid={true}>
+    <Row className="layoutRow">
+      <Col className="layoutCol" sm={12} md={8}>
+        <div className="gameArea">{ getMainScreen(props) }</div>
+      </Col>
+      <Col className="layoutCol" sm={12} md={4}>
+        <PlayerList players={props.players}
+                    myPlayer={props.myPlayer} />
+      </Col>
+    </Row>
+  </Container>
+  
 }

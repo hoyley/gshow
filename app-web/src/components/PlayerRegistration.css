@@ -1,0 +1,25 @@
+
+.registrationForm {
+    display:flex;
+    width:100%;
+    align-content: stretch;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.registrationLabel {
+    flex: 0 0 80px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.registrationName {
+    flex-grow: 1;
+}
+
+.registrationSubmit {
+    flex: 0 0 30px;
+    height: 38px;
+}
+
+
