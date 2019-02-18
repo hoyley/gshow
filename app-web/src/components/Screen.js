@@ -9,7 +9,9 @@ const getMainScreen = (props) => {
   if (props.screen === "Welcome") {
     return <WelcomeScreen />;
   } else if (props.screen === "ChoiceGame") {
-    return <ChoiceGame gameStatus={props.gameStatus} gameConfig={props.gameConfig} players={props.players}
+    return <ChoiceGame gameStatus={props.gameStatus}
+                       gameConfig={props.gameConfig}
+                       players={props.players}
                        myPlayer={props.myPlayer} />;
   } else {
     return <Error msg={"Unknown screen: " + props.screen} />
@@ -18,7 +20,10 @@ const getMainScreen = (props) => {
 
 export default (props) => {
   return <div className="screen">
-    <div className="playerList"><PlayerList players={props.players} myPlayer={props.myPlayer} /></div>
+    <div className="playerList">
+      <PlayerList players={props.players}
+                  myPlayer={props.myPlayer} />
+    </div>
     <div className="gameArea">{ getMainScreen(props) }</div>
   </div>
 }

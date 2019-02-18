@@ -3,6 +3,7 @@ package hoyley.gshow.controllers;
 import hoyley.gshow.games.ChoiceGame;
 import hoyley.gshow.games.TimedGame;
 import hoyley.gshow.games.TimedGameConfig;
+import hoyley.gshow.helpers.HttpServletHelper;
 import hoyley.gshow.model.GameState;
 import hoyley.gshow.model.Player;
 import hoyley.gshow.model.PlayerAnswer;
@@ -26,12 +27,14 @@ public class ChoiceGameController {
     private static final int GAME_OVER_DELAY_MILLIS = 5000;
     private final RootState state;
     private final GameState gameState;
+    private final HttpServletHelper servletHelper;
     private ChoiceGame choiceGame;
 
     @Autowired
-    public ChoiceGameController(RootState state, GameState gameState) {
+    public ChoiceGameController(RootState state, GameState gameState, HttpServletHelper servletHelper) {
         this.state = state;
         this.gameState = gameState;
+        this.servletHelper = servletHelper;
     }
 
     @PostMapping
@@ -40,9 +43,7 @@ public class ChoiceGameController {
             throw new RuntimeException("Submitted answer but no game in progress");
         }
 
-        Player player = state.getRegisteredPlayers().stream()
-            .filter(p -> p.getSessionId().equals(request.getSession().getId()))
-            .findFirst().orElse(null);
+        Player player = servletHelper.getPlayer(request);
 
         if (player == null) {
             throw new RuntimeException("Player does not exist for this session.");

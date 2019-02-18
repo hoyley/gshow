@@ -19,11 +19,10 @@ public class RegistrationController {
     private RootState state;
 
     @PostMapping("/registerPlayer")
-    public void registerPlayer(@RequestBody String playerName, HttpServletRequest request,
-                               HttpServletResponse response) {
+    public void registerPlayer(@RequestBody String playerName, HttpServletRequest request) {
         Player newPlayer = registerPlayer(playerName, request.getSession().getId());
         if (newPlayer != null) {
-            response.addCookie(new Cookie("player-id", newPlayer.getId()));
+            state.setMyPlayer(newPlayer);
         }
     }
 

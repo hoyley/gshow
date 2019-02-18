@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import facade from '../api/Facade'
+import service from '../service/GshowService'
 export default class extends Component {
 
   constructor(props) {
@@ -17,7 +17,7 @@ export default class extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    facade.registerPlayer(this.state.name);
+    service.registerPlayer(this.state.name);
   }
 
   render() {

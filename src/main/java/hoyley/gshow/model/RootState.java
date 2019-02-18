@@ -10,6 +10,7 @@ public class RootState {
 
     private final List<Player> registeredPlayers = new LinkedList<>();
     private Screen screen;
+    private Player myPlayer;
 
     public List<Player> getRegisteredPlayers() {
         return registeredPlayers;
@@ -21,5 +22,13 @@ public class RootState {
 
     public void setScreen(Screen screen) {
         this.screen = screen;
+    }
+
+    public Player getMyPlayer() {
+        return myPlayer;
+    }
+
+    public void setMyPlayer(Player myPlayer) {
+        this.myPlayer = myPlayer;
     }
 }

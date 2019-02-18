@@ -37,7 +37,7 @@ dependencies {
 }
 
 task webpack(type: Exec) {
-	workingDir './app'
+	workingDir './app-web'
 		commandLine 'cd'
 	commandLine "npm", "run", "build"
     doLast {
@@ -47,7 +47,7 @@ task webpack(type: Exec) {
 
 task copyWebPack(type: Copy) {
 	dependsOn 'webpack'
-	from('./app/build')
+	from('./app-web/build')
 	into('src/main/resources/public')
     doLast {
         println "Webpack copied to classes folder"
@@ -59,7 +59,7 @@ task cleanPublic(type: Delete) {
 }
 
 task cleanWebPack(type: Delete) {
-	delete 'app/build'
+	delete 'app-web/build'
 }
 
 assemble.dependsOn copyWebPack

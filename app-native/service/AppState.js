@@ -1,5 +1,4 @@
-import facade from './api/Facade.js';
-import Cookies from 'js-cookie'
+
 export default class {
 
   constructor(onStateChange) {
@@ -7,10 +6,13 @@ export default class {
     this.clear(true);
   }
 
+  setChangeHandler(onStateChange) {
+    this.onStateChange = onStateChange;
+  }
+
   clear(suppress) {
     this.screen = "Welcome";
     this.players = [];
-    this.playerId = null;
     this.myPlayer = null;
     this.gameConfig = null;
     this.gameStatus = null;
@@ -18,19 +20,6 @@ export default class {
     if (!suppress) {
       this.onChange();
     }
-  }
-
-  start() {
-    setInterval(() => this.refresh(), 200);
-  }
-  
-  refresh() {
-    facade.state().then(response => {
-      this.setState(response.data);
-    }).catch(err => {
-      console.error(err);
-      this.clear();
-    });
   }
 
   setState(state) {
@@ -53,9 +42,6 @@ export default class {
   }
 
   onChange() {
-    this.playerId = Cookies.get("player-id");
-    this.myPlayer = this.players.find(p => p.id === this.playerId);
-    this.onStateChange();
+    this.onStateChange && this.onStateChange();
   }
-
 }

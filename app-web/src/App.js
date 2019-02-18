@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 import Screen from './components/Screen';
-import AppState from './AppState.js';
+import service from './service/GshowService';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.appState = new AppState(() => this.onAppStateChange());
-    this.state = { appState: this.appState };
+    this.state = { appState: service.appState };
   }
 
   componentDidMount() {
-    this.appState.start();
+    service.appState.setChangeHandler(() => this.onAppStateChange());
   }
-  
+
   onAppStateChange() {
-    this.setState({ appState: this.appState });
+    this.setState({ appState: service.appState });
   }
 
   render() {

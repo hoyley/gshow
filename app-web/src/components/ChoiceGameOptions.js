@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import facade from '../api/Facade';
+import service from '../service/GshowService';
 import CircleContainer from './controls/CircleContainer';
 import './ChoiceGameOptions.css';
-import GameTimer from "./GameTimer";
+import GameTimer from "./controls/GameTimer";
 
 export default class extends Component {
 
   handleChoice(option) {
     if (!this.playerMadeChoice()) {
       this.setState({chosen: option});
-      facade.choiceGameAnswer(option.option);
+      service.choiceGameAnswer(option.option);
     }
   }
 
@@ -51,10 +51,11 @@ export default class extends Component {
         <CircleContainer>
           {
             this.props.options.map(option =>
-            <div className={this.getClassName(option)}
-                 onClick={() => this.handleChoice(option)}
-                 disabled={this.optionDisabled(option)}>{option.option}
-             </div>)
+              <div className={this.getClassName(option)}
+                   onClick={() => this.handleChoice(option)}
+                   disabled={this.optionDisabled(option)}>{option.option}
+               </div>
+            )
           }
         </CircleContainer>
       </div>

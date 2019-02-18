@@ -1,5 +1,5 @@
 import React from "react";
-import Countdown from './controls/Countdown.js';
+import Countdown from './Countdown.js';
 
 export default class extends React.Component {
 
