@@ -1,11 +1,11 @@
 
+.questionContainer {
+  padding: 8%;
+}
 .questionText {
-    font: 600 1.5em/1 'Raleway', sans-serif;
-    color: rgba(0,0,0,.5);
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: .2em;
-    width: 100%;
-    padding-bottom: 1em;
-    padding-top: 1em;
+  font: 600 3.125em/1.125 'Rubik', sans-serif;
+  color: var(--black);
+  text-align: center;
+  width: 100%;
+  padding-bottom: 5vh;
 }

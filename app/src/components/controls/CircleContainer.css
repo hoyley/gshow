@@ -3,12 +3,12 @@ ul.circleContainer {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 1000px;
-    height: 1000px;
+    width: 100%;
+    height: 100%;
 }
 
 .circleItem {
-    position: absolute; 
+    position: absolute;
     -webkit-transition: all 0.5s linear;
     -moz-transition: all 0.5s linear;
     transition: all 0.5s linear;

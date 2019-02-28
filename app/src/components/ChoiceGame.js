@@ -9,8 +9,8 @@ const getMyAnswer = (props) => {
 
 export default (props) => {
 
-  return <div>
-    <h2 className="questionText">{props.gameConfig.question}</h2>
+  return <div class="questionContainer">
+    <h1 className="questionText">{props.gameConfig.question}</h1>
 
     {
       props.gameConfig.status.gameOver

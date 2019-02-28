@@ -8,19 +8,19 @@ export default class extends Component {
   render() {
     const players = this.props.players || [];
 
-    const playerList = players.map(player =>
-      <li key={player.id}>{player.nickname} ({player.score})</li>
+    const playerList =
+    players.map(player =>
+      <li key={player.id}>{player.nickname}<span class="playerScore">{player.score}</span></li>
     );
 
     return (
-      <div className="playerList">
-        <h1>Registration</h1>
+      <div>
+      {this.props.myPlayer
+        ? <div>{`Welcome, ${this.props.myPlayer.nickname}.`}</div>
+        : <PlayerRegistration/>
+      }
+        <h2 class="title">Active Players</h2>
         <ul>{playerList}</ul>
-
-        {this.props.myPlayer
-          ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>
-          : <PlayerRegistration/>
-        }
       </div>
     );
   }

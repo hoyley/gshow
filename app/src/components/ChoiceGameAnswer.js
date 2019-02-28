@@ -30,17 +30,17 @@ export default (props) => {
 
     {
       correct &&
-        <div className="answerMessage">{"You answered correctly in " + elapsedTime + " seconds and gained " + points + " points!"}</div>
+        <div className="answerMessage correct">{"You answered correctly in " + elapsedTime + " seconds and gained " + points + " points!"}</div>
     }
 
     {
       incorrect &&
-        <div className="answerMessage">You got it wrong :(</div>
+        <div className="answerMessage incorrect">You got it wrong :(</div>
     }
 
     {
       done && noneAnswer &&
-        <div className="answerMessage">You didn't even answer!?!</div>
+        <div className="answerMessage noAnswer">You didn't even answer!?!</div>
     }
   </div>
 

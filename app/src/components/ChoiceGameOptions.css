@@ -1,52 +1,35 @@
 
 .option {
-    color: #404040;
-
+  background: white;
+  color: var(--black);
+  padding: 20px;
+  border-radius: 6px;
+  display: inline-block;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  font-weight: 700;
+  transition: all 0.3s ease 0s;
 }
-
 .option:hover:not([disabled]) {
-    font-weight: 700;
-    color: black !important;
-    letter-spacing: 3px;
-    background: none;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
+  color: white;
+  background: var(--black);
+  cursor: pointer;
+  transform: scale(1.125);
 }
-
-.option:not([disabled]) {
-    border: none;
-    background: #404040;
-    color: #ffffff !important;
-    font-weight: 100;
-    padding: 20px;
-    text-transform: uppercase;
-    border-radius: 6px;
-    display: inline-block;
-}
-
 .option[disabled] {
-    padding: 20px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    background: none;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    transition: all 0.3s ease 0s;
+  cursor: auto;
 }
-
 .optionEliminated {
-    text-decoration: line-through;
-
+  text-decoration: line-through;
+  opacity: .5;
 }
-
 .optionMyChoice {
-    color: green !important;
+  color: white;
+  background: var(--black);
 }
 
 .timer {
-    position: absolute;
-    margin-left: 4em;
-    margin-top: 8em;
+  position: absolute;
+  margin-left: 4em;
+  margin-top: 8em;
 }
