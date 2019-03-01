@@ -1,8 +1,8 @@
 package hoyley.gshow.games;
 
-import hoyley.gshow.model.ChoiceQuestion;
+import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
 import hoyley.gshow.model.Player;
-import hoyley.gshow.model.PlayerAnswer;
+import hoyley.gshow.model.ChoiceGame.PlayerAnswer;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -74,8 +74,7 @@ public class ChoiceGame extends TimedGame {
             int indexToRemove;
             do
                 indexToRemove = random.nextInt(question.getOptions().size());
-            while (indexToRemove == answerIndex ||
-                question.getOptions().get(indexToRemove).isEliminated());
+            while (indexToRemove == answerIndex || question.getOptions().get(indexToRemove).isEliminated());
             
             question.getOptions().get(indexToRemove).setEliminated(true);
         }

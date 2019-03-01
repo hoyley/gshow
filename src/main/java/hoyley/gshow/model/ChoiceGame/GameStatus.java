@@ -1,4 +1,4 @@
-package hoyley.gshow.model;
+package hoyley.gshow.model.ChoiceGame;
 
 import lombok.Data;
 

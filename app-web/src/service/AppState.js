@@ -16,6 +16,7 @@ export default class {
     this.myPlayer = null;
     this.gameConfig = null;
     this.gameStatus = null;
+    this.admin = false;
 
     if (!suppress) {
       this.onChange();
@@ -23,17 +24,21 @@ export default class {
   }
 
   setState(state) {
-    if (!state || !state.screen || !state.screen.name) {
+    if (!state || !state.globalState || !state.globalState.screen) {
       this.clear();
       return;
     }
 
-    this.screen = state.screen.name;
-    this.gameConfig = state.screen;
-    this.gameStatus = state.screen.status;  
+    let globalState = state.globalState;
 
-    if (state.registeredPlayers) {
-      this.players = state.registeredPlayers;
+    this.screen = globalState.screen;
+    this.gameConfig = globalState.choiceGameState;
+    this.gameStatus = globalState.choiceGameState.status;
+    this.myPlayer = state.myPlayer;
+    this.admin = state.admin;
+
+    if (globalState.registeredPlayers) {
+      this.players = globalState.registeredPlayers;
     } else {
       this.players = [];
     }

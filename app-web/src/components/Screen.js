@@ -2,7 +2,8 @@ import React from "react";
 import WelcomeScreen from "./Welcome";
 import PlayerList from "./PlayerList";
 import ChoiceGame from "./ChoiceGame";
-  import './Screen.css';
+import AdminPanel from "./AdminPanel";
+import './Screen.css';
 import {Container, Row, Col} from 'react-bootstrap';
 
 const getMainScreen = (props) => {
@@ -23,11 +24,19 @@ export default (props) => {
   return <Container fluid={true}>
     <Row className="layoutRow">
       <Col className="layoutCol" sm={12} md={8}>
-        <div className="gameArea">{ getMainScreen(props) }</div>
+        <div className="gameArea">
+          <div className="gameAreaContent">
+            { getMainScreen(props) }
+          </div>
+          { props.admin &&
+              <AdminPanel className="adminPanel"
+                          currentGameIndex={props.gameConfig.currentQuestion} /> }
+        </div>
       </Col>
       <Col className="layoutCol" sm={12} md={4}>
         <PlayerList players={props.players}
-                    myPlayer={props.myPlayer} />
+                    myPlayer={props.myPlayer}
+                    isAdmin={props.admin}/>
       </Col>
     </Row>
   </Container>

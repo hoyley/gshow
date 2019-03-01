@@ -2,16 +2,14 @@ package hoyley.gshow;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hoyley.gshow.model.ChoiceQuestion;
-import hoyley.gshow.model.GameState;
+import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
+import hoyley.gshow.model.ChoiceGame.QuestionList;
 import hoyley.gshow.model.Player;
-import hoyley.gshow.model.RootState;
+import hoyley.gshow.model.state.GlobalState;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -22,53 +20,53 @@ import java.util.List;
 @Component
 public class Configurator {
 
-    private final GameState gameState;
-    private final RootState rootState;
+    private final QuestionList questionList;
+    private final GlobalState globalState;
 
     @Autowired
-    public Configurator(GameState gameState, RootState rootState) {
-        this.gameState = gameState;
-        this.rootState = rootState;
+    public Configurator(QuestionList questionList, GlobalState globalState) {
+        this.questionList = questionList;
+        this.globalState = globalState;
     }
 
     public void configure() {
-        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+        questionList.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many apples?");
             setAnswer("3");
             setOptionStrings(Arrays.asList("1", "2", "3", "4"));
         }});
 
-        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+        questionList.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
             setOptionStrings(Arrays.asList("1", "2", "3", "4", "5"));
         }});
 
-        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+        questionList.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
             setOptionStrings(Arrays.asList("1", "2", "3", "4", "5", "6"));
         }});
 
-        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+        questionList.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
             setOptionStrings(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
         }});
 
-        gameState.addChoiceQuestion(new ChoiceQuestion() {{
+        questionList.addChoiceQuestion(new ChoiceQuestion() {{
             setQuestion("How many Oranges?");
             setAnswer("3");
             setOptionStrings(Arrays.asList("3", "There are two apples", "There are two apples", "There are two apples", "There are two apples", "6", "7", "8", "9", "10"));
         }});
 
-        rootState.getRegisteredPlayers().add(new Player() {{
+        globalState.getRegisteredPlayers().add(new Player() {{
             setId("lskadjfas");
             setNickname("Default Player");
             setSessionId("123");
         }});
 
-        rootState.getRegisteredPlayers().add(new Player() {{
+        globalState.getRegisteredPlayers().add(new Player() {{
             setId("hsdfga");
             setNickname("Default Player 2");
             setSessionId("125");
@@ -114,6 +112,6 @@ public class Configurator {
 
         Collections.shuffle(questions);
 
-        questions.forEach(q -> gameState.addChoiceQuestion(q));
+        questions.forEach(q -> questionList.addChoiceQuestion(q));
     }
 }

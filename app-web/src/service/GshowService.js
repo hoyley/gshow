@@ -6,11 +6,10 @@ class GshowService {
     this.rootPath = rootPath || "";
     this.appState = new AppState();
     setInterval(() => this.refresh(), 200);
-    this.refreshMyPlayer();
   }
 
   refresh() {
-    this.state().then(response => {
+    return this.state().then(response => {
       this.appState.setState(response);
     }).catch(err => {
       console.error(err);
@@ -27,11 +26,11 @@ class GshowService {
       method: 'post',
       headers: { 'content-type': 'text/plain' },
       body: nickname
-    }).then(() => this.refreshMyPlayer());
+    });
   }
 
   startGame() {
-    fetch(this.rootPath + '/startGame');
+    return fetch(this.rootPath + '/game/choice/next');
   }
 
   myPlayer() {
@@ -41,19 +40,25 @@ class GshowService {
   }
 
   choiceGameAnswer(choice) {
-    fetch(this.rootPath + '/game/choice', {
+    return fetch(this.rootPath + '/game/choice', {
       method: 'post',
       headers: { 'content-type': 'text/plain' },
       body: choice
     });
   }
 
-  refreshMyPlayer() {
-    this.myPlayer()
-      .then(player => {
-        this.appState.myPlayer = player;
-        this.appState.onChange();
-      });
+  chooseGame(index) {
+    return fetch(this.rootPath + `/game/choice/goTo?num=${index}`);
+  }
+
+  endGame() {
+    return fetch(this.rootPath + '/game/choice/end');
+  }
+
+  setGuessTime(time) {
+    return fetch(this.rootPath + `/game/choice/guessTime?guessTimeSecs=${time}`, {
+      method: 'post'
+    });
   }
 };
 

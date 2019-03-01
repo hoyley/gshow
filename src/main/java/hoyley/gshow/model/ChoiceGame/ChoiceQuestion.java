@@ -1,8 +1,7 @@
-package hoyley.gshow.model;
+package hoyley.gshow.model.ChoiceGame;
 
 import lombok.Data;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public class ChoiceQuestion implements Cloneable {
     public Object clone() {
         ChoiceQuestion newQuestion = new ChoiceQuestion();
         newQuestion.setAnswer(answer);
-        newQuestion.setOptions(new LinkedList<>(options));
+        newQuestion.setOptionList(options);
         newQuestion.setQuestion(question);
         return newQuestion;
     }
@@ -26,5 +25,10 @@ public class ChoiceQuestion implements Cloneable {
         setOptions(options.stream()
             .map(o -> new ChoiceOption(o))
             .collect(Collectors.toList()));
+    }
+
+    public void setOptionList(List<ChoiceOption> options) {
+        List<String> optionStrings = options.stream().map(o -> o.getOption()).collect(Collectors.toList());
+        setOptionStrings(optionStrings);
     }
 }

@@ -1,0 +1,28 @@
+
+.adminPanelContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 470px;
+    
+}
+
+.adminPanelContent .btn {
+    padding: 4px;
+    margin: 2px;
+}
+
+.guessTimeInput {
+    width: 120px;
+}
+
+.guessTimeInput .form-control {
+    height: 35px;
+}
+
+label{
+    display: table-cell;
+    vertical-align: middle;
+    height: 20px;
+    margin-right: 10px;
+}
