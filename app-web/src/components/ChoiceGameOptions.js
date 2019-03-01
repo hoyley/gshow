@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import service from '../service/GshowService';
 import GameTimer from "./controls/FlatGameTimer";
-import {ListGroup, Button} from 'react-bootstrap';
+import {ListGroup} from 'react-bootstrap';
 
 import './ChoiceGameOptions.css';
 
@@ -51,9 +51,9 @@ export default class extends Component {
           {
             this.props.options.map(option =>
               <ListGroup.Item>
-                <Button variant="light" className={this.getClassName(option)}
+                <button className={this.getClassName(option)}
                         onClick={() => this.handleChoice(option)}
-                        disabled={this.optionDisabled(option)}>{option.option}</Button>
+                        disabled={this.optionDisabled(option)}>{option.option}</button>
                </ListGroup.Item>
             )
           }

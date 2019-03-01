@@ -31,6 +31,7 @@ export default class extends Component {
         <Form.Control className="registrationName"
                       type="text"
                       placeholder="Your Name"
+                      maxLength="40"
                       value={this.state.name}
                       onChange={this.handleChange} />
         <Button className="registrationSubmit"

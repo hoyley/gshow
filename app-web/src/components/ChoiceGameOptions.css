@@ -1,48 +1,52 @@
 
 .option {
-    color: #404040;
-
+    background: var(--white);
+    color: var(--black);
+    padding: 20px;
+    border-radius: 6px;
+    display: inline-block;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    font-weight: 700;
+    transition: all 0.3s ease 0s;
 }
 
 .option:hover:not([disabled]) {
-    font-weight: 700;
-    color: black !important;
-    letter-spacing: 10px;
-    background: none;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    transition: all 0.3s ease 0s;
+    background: var(--black);
     cursor: pointer;
+    color: var(--white);
+
 }
 
 .option:not([disabled]) {
-    border: none;
-    background: #404040;
-    color: #ffffff !important;
-    font-weight: 100;
-    padding: 20px;
-    text-transform: uppercase;
-    border-radius: 6px;
-    display: inline-block;
+    cursor: auto;
 }
 
 .option[disabled] {
-    padding: 20px;
     font-weight: 700;
     letter-spacing: 3px;
-    background: none;
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     transition: all 0.3s ease 0s;
+    opacity: 0.4;
+}
+
+.option:hover:not([disabled]) {
+    background: var(--black);
+    cursor: pointer;
+    color: var(--white);
+
 }
 
 .optionEliminated {
+    opacity: 0.4;
     text-decoration: line-through;
-
 }
 
 .optionMyChoice {
-    color: green !important;
+    background: var(--yellow);
+    color: var(--white);
+    opacity: 1 !important;
 }
 
 .timer {

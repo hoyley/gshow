@@ -10,18 +10,20 @@ export default class extends Component {
     const players = this.props.players || [];
 
     const playerList = players.map(player =>
-      <ListGroup.Item className="playerListItem">{player.nickname} ({player.score})</ListGroup.Item>
+      <ListGroup.Item>{player.nickname}<span class="playerScore">{player.score}</span></ListGroup.Item>
     );
 
     return (
       <div className="playerList">
-        <h1>Registration</h1>
+        <h2 className="title">Active Players</h2>
         <ListGroup>{playerList}</ListGroup>
 
-        {this.props.myPlayer
-          ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>
-          : <PlayerRegistration/>
-        }
+        <div className="playerRegistration">
+          {this.props.myPlayer
+            ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>
+            : <PlayerRegistration/>
+          }
+        </div>
       </div>
     );
   }

@@ -11,7 +11,7 @@ const getMyAnswer = (props) => {
 
 export default (props) => {
 
-  return <div>
+  return <div class="questionContainer">
     <h2 className="questionText">{props.gameConfig.question}</h2>
 
     {

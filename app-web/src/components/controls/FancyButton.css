@@ -34,5 +34,5 @@
 }
 .fancy-button .button-text {
     letter-spacing: 0.01em;
-    font-family: Futura, "Helvetica Neue", Helvetica, sans-serif;
+    font: 600 2.5em/1 'Rubik', sans-serif;
 }
