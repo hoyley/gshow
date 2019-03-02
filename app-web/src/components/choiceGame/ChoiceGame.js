@@ -1,6 +1,7 @@
 import React from "react";
-import ChoiceGameOptions from './ChoiceGameOptions';
-import ChoiceGameAnswer from './ChoiceGameAnswer';
+import ChoiceGameOptions from './Options';
+import ChoiceGameAnswer from './Answer';
+import ChoiceGamePlayerUpdates from './PlayerUpdates';
 import './ChoiceGame.css'
 
 const getMyAnswer = (props) => {
@@ -24,6 +25,14 @@ export default (props) => {
                              gameStatus={props.gameStatus} />
 
     }
+
+    {
+      props.gameConfig.status.gameOver &&
+        <ChoiceGamePlayerUpdates className="playerUpdatesContainer"
+                                 players={props.players}
+                                 playerAnswers={props.gameConfig.playerAnswers} />
+    }
+
   </div>
 
 }

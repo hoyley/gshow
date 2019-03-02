@@ -5,6 +5,7 @@ import hoyley.gshow.games.TimedGame;
 import hoyley.gshow.games.TimedGameConfig;
 import hoyley.gshow.helpers.HttpRequestHelper;
 import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
+import hoyley.gshow.model.ChoiceGame.PlayerAnswer;
 import hoyley.gshow.model.Player;
 import hoyley.gshow.model.ChoiceGame.QuestionList;
 import hoyley.gshow.model.state.ChoiceGameState;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Timer;
 import java.util.stream.Collectors;
 
@@ -113,10 +115,7 @@ public class ChoiceGameController {
         screen.getStatus().setGameOver(choiceGame.isGameOver());
 
         if (choiceGame.isGameOver()) {
-            screen.setAnswer(choiceGame.getQuestion().getAnswer());
-            screen.setPlayerAnswers(choiceGame.getAnswers().values());
-            tallyPoints();
-            endGameConditionally();
+            initiateGameComplete(screen);
         } else {
             screen.setPlayerAnswers(choiceGame.getAnswers().values().stream()
                 .map(p -> p.cloneSecret())
@@ -124,6 +123,13 @@ public class ChoiceGameController {
         }
         state.setChoiceGameState(screen);
         state.setScreen(GlobalState.Screen.ChoiceGame);
+    }
+
+    private void initiateGameComplete(ChoiceGameState screen) {
+        screen.setAnswer(choiceGame.getQuestion().getAnswer());
+        screen.setPlayerAnswers(getPlayerAnswers());
+        tallyPoints();
+        endGameConditionally();
     }
 
     private void endGameConditionally() {
@@ -160,4 +166,29 @@ public class ChoiceGameController {
             state.setScreen(GlobalState.Screen.Welcome);
         }
     }
+
+    private Collection<PlayerAnswer> getPlayerAnswers() {
+        Collection<PlayerAnswer> answers = choiceGame.getAnswers().values().stream().collect(Collectors.toList());
+        Collection<String> playersThatAnswered = answers.stream()
+            .map(a -> a.getId())
+            .collect(Collectors.toList());
+
+        Collection<PlayerAnswer> nonAnswers = state.getRegisteredPlayers().stream()
+            .filter(p -> !playersThatAnswered.contains(p.getId()))
+            .map(p -> new PlayerAnswer() {{
+                setId(p.getId());
+                setPoints(0);
+                setCorrect(false);
+            }}).collect(Collectors.toList());
+
+        answers.addAll(nonAnswers);
+
+        answers.forEach(a -> {
+            if (!a.isCorrect()) {
+                a.setPoints(0);
+            }
+        });
+        return answers;
+    }
+
 }

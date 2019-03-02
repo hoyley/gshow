@@ -1,7 +1,7 @@
 import React from "react";
 import WelcomeScreen from "./Welcome";
 import PlayerList from "./PlayerList";
-import ChoiceGame from "./ChoiceGame";
+import ChoiceGame from "./choiceGame/ChoiceGame";
 import AdminPanel from "./AdminPanel";
 import './Screen.css';
 import {Container, Row, Col} from 'react-bootstrap';

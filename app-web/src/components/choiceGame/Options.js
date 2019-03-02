@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import service from '../service/GshowService';
-import GameTimer from "./controls/FlatGameTimer";
+import service from '../../service/GshowService';
+import GameTimer from "../controls/FlatGameTimer";
 import {ListGroup} from 'react-bootstrap';
 
-import './ChoiceGameOptions.css';
+import './Options.css';
 
 export default class extends Component {
 

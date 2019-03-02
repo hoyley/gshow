@@ -22,17 +22,16 @@
 .answer {
     animation: 2s popIn;
     animation-fill-mode: forwards;
-    color: green;
+    color: var(--right-color);
 }
 
 @keyframes revealAnswer {
     0% {
-        color: black;
+        color: var(--text);
     }
     100% {
-        color: green;
+        color: var(--right-color);
     }
-
 }
 
 @keyframes popIn {
@@ -52,24 +51,24 @@
 
 @keyframes revealCorrect {
     0% {
-        color: black;
+        color: var(--text);
     }
     90% {
-        color: black;
+        color: var(--text);
     }
     100% {
-        color: green;
+        color: var(--right-color);
     }
 }
 
 @keyframes revealIncorrect {
     99% {
         text-decoration: none;
-        color: black;
+        color: var(--text);
     }
     100% {
         text-decoration: line-through;
-        color: red;
+        color: var(--wrong-color);
     }
 }
 
@@ -89,7 +88,7 @@
     color: var(--white);
 }
 .answerMessage.incorrect {
-    background-color: red;
+    background-color: var(--wrong-color);
     color: var(--white);
 }
 .answerMessage.noAnswer {

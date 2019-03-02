@@ -1,0 +1,11 @@
+
+.playerUpdates {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.playerUpdates>* {
+    flex: 1 1 220px;
+
+}

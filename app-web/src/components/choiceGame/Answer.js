@@ -1,5 +1,5 @@
 import React from "react";
-import './ChoiceGameAnswer.css';
+import './Answer.css';
 
 export default class extends React.Component {
 

@@ -1,4 +1,8 @@
 
+.playerUpdatesContainer {
+    margin-top: 10px;
+}
+
 .questionText {
     font: 600 1.75em/1.125 'Rubik', sans-serif;
     color: var(--text);

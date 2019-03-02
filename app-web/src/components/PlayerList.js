@@ -7,7 +7,9 @@ export default class extends Component {
 
 
   render() {
-    const players = this.props.players || [];
+    const players = [...(this.props.players || [])].sort(
+      (p1, p2) => p2.score - p1.score
+    );
 
     const playerList = players.map(player =>
       <ListGroup.Item>{player.nickname}<span className="playerScore">{player.score}</span></ListGroup.Item>
@@ -22,7 +24,7 @@ export default class extends Component {
           {this.props.myPlayer
             ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>
             : this.props.isAdmin
-                ? <div>{`Welcome Admin`}</div>
+                ? <div>{`You have all of the powers!`}</div>
                 : <PlayerRegistration/>
           }
         </div>
