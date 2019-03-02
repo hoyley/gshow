@@ -19,4 +19,5 @@ code {
   --bright: rgb(255, 255, 255);
   --right-color: green;
   --wrong-color: red;
+  --answer-delay: 2s;
 }

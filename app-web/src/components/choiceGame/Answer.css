@@ -4,23 +4,23 @@
     color: black;
 
     text-align: center;
-    transition: all 2s ease 0s;
-    transition-delay: 2s;
+    transition: all var(--answer-delay) ease 0s;
+    transition-delay: var(--answer-delay);
 }
 
 .incorrectAnswer {
     text-decoration: none;
     color: black;
-    animation: 2s revealIncorrect;
+    animation: var(--answer-delay) revealIncorrect;
     animation-fill-mode: forwards;
 }
 
 .correctAnswer {
-    animation: 2s revealCorrect;
+    animation: var(--answer-delay) revealCorrect;
     animation-fill-mode: forwards;}
 
 .answer {
-    animation: 2s popIn;
+    animation: var(--answer-delay) popIn;
     animation-fill-mode: forwards;
     color: var(--right-color);
 }
@@ -80,7 +80,7 @@
     padding-bottom: 1em;
     padding-top: 1em;
     text-align: center;
-    animation: 2s popIn;
+    animation: var(--answer-delay) popIn;
     animation-fill-mode: forwards;
 }
 .answerMessage.correct {
