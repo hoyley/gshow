@@ -1,22 +1,88 @@
 
-.answer {
-    border-top: 1px solid var(--gray);
+.answerText {
     font: 600 3.125em/1.125 'Rubik', sans-serif;
-    color: var(--black);
-    padding-bottom: 3em;
-    padding-top: 1em;
+    color: black;
+
     text-align: center;
-    transition: all 1s ease 0s;
+    transition: all 2s ease 0s;
+    transition-delay: 2s;
+}
+
+.incorrectAnswer {
+    text-decoration: none;
+    color: black;
+    animation: 2s revealIncorrect;
+    animation-fill-mode: forwards;
+}
+
+.correctAnswer {
+    animation: 2s revealCorrect;
+    animation-fill-mode: forwards;}
+
+.answer {
+    animation: 2s popIn;
+    animation-fill-mode: forwards;
+    color: green;
+}
+
+@keyframes revealAnswer {
+    0% {
+        color: black;
+    }
+    100% {
+        color: green;
+    }
+
+}
+
+@keyframes popIn {
+    0% {
+        height: 0;
+        visibility: hidden;
+    }
+    99% {
+        height: 0;
+        visibility: hidden;
+    }
+    100% {
+        height: 100%;
+        visibility: visible;
+    }
+}
+
+@keyframes revealCorrect {
+    0% {
+        color: black;
+    }
+    90% {
+        color: black;
+    }
+    100% {
+        color: green;
+    }
+}
+
+@keyframes revealIncorrect {
+    99% {
+        text-decoration: none;
+        color: black;
+    }
+    100% {
+        text-decoration: line-through;
+        color: red;
+    }
 }
 
 .answerMessage {
-
     border-radius: 6px;
     width: 100%;
     height: 100%;
+    margin-top: 1em;
     padding-bottom: 1em;
     padding-top: 1em;
     text-align: center;
+    animation: 2s popIn;
+    animation-fill-mode: forwards;
 }
 .answerMessage.correct {
     background-color: green;

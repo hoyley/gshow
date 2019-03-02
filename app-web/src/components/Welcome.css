@@ -6,7 +6,7 @@
     text-align: center;
     align-items: center;
     justify-content: center;
-    background-color: var(--yellow);
+    background-color: var(--background);
 }
 
 .welcomeButton {

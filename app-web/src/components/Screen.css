@@ -20,7 +20,7 @@
 .gameArea {
     height: 100%;
     display: flex;
-    background-color: var(--yellow);
+    background-color: var(--background);
     flex-direction: column;
 }
 

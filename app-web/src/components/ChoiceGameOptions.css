@@ -1,7 +1,7 @@
 
 .option {
-    background: var(--white);
-    color: var(--black);
+    background: var(--bright);
+    color: var(--text);
     padding: 20px;
     border-radius: 6px;
     display: inline-block;
@@ -12,9 +12,9 @@
 }
 
 .option:hover:not([disabled]) {
-    background: var(--black);
+    background: var(--text);
     cursor: pointer;
-    color: var(--white);
+    color: var(--bright);
 
 }
 
@@ -32,9 +32,9 @@
 }
 
 .option:hover:not([disabled]) {
-    background: var(--black);
+    background: var(--text);
     cursor: pointer;
-    color: var(--white);
+    color: var(--bright);
 
 }
 
@@ -44,8 +44,8 @@
 }
 
 .optionMyChoice {
-    background: var(--yellow);
-    color: var(--white);
+    background: var(--background);
+    color: var(--bright);
     opacity: 1 !important;
 }
 

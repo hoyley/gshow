@@ -15,7 +15,7 @@ export default class extends Component {
 
     return (
       <div className="playerList">
-        <h2 className="title">Active Players</h2>
+        <h2 className="title">Active Centrons</h2>
         <ListGroup>{playerList}</ListGroup>
 
         <div className="playerRegistration">

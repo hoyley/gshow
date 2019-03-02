@@ -13,9 +13,9 @@ code {
 }
 
 :root {
-  --yellow: rgb(255, 191, 61);
-  --black: rgb(58, 61, 54);
-  --gray: rgb(211, 211, 211);
-  --white: rgb(255, 255, 255);
+  --background: rgb(255, 191, 61);
+  --text: rgb(58, 61, 54);
+  --highlight: rgb(211, 211, 211);
+  --bright: rgb(255, 255, 255);
 
 }
