@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import service from '../../service/GshowService';
 import GameTimer from "../controls/FlatGameTimer";
-import {ListGroup} from 'react-bootstrap';
 
 import './Options.css';
 
 export default class extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.maxCols = 2;
+    this.preferredMaxRows = 5;
+  }
 
   handleChoice(option) {
     if (!this.playerMadeChoice()) {
@@ -42,22 +48,39 @@ export default class extends Component {
     
     return className;
   }
+  
+  getNumColumns() {
+    if (this.props.options.length > this.preferredMaxRows) {
+      return Math.ceil(this.props.options.length / this.preferredMaxRows);
+    } else {
+      return 1;
+    }
+  }
+
+  getColumnWidth() {
+    return (100 / this.getNumColumns()) + "%";
+  }
 
   render() {
+    const buttonStyle = {
+      'height': this.rowHeight + "px",
+      'width': this.getColumnWidth()
+    };
+
     return (
       <div>
         <GameTimer className="timer" {...this.props.gameStatus} />
-        <ListGroup>
+        <div className="optionsContainer">
           {
             this.props.options.map(option =>
-              <ListGroup.Item>
-                <button className={this.getClassName(option)}
-                        onClick={() => this.handleChoice(option)}
-                        disabled={this.optionDisabled(option)}>{option.option}</button>
-               </ListGroup.Item>
+              <button className={this.getClassName(option)}
+                      onClick={() => this.handleChoice(option)}
+                      disabled={this.optionDisabled(option)}
+                      style={buttonStyle}
+              >{option.option}</button>
             )
           }
-        </ListGroup>
+        </div>
       </div>
     );
   }

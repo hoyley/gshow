@@ -107,6 +107,7 @@ public class ChoiceGameController {
         
         ChoiceGameState screen = new ChoiceGameState();
         screen.setQuestion(choiceGame.getQuestion().getQuestion());
+        screen.setImagePath(choiceGame.getQuestion().getImagePath());
         screen.setOptions(choiceGame.getQuestion().getOptions());
         screen.setCurrentQuestion(questionList.getCurrentQuestionIndex());
         screen.setTotalQuestions(questionList.getTotalQuestions());

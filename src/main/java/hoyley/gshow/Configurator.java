@@ -1,117 +1,65 @@
 package hoyley.gshow;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
 import hoyley.gshow.model.ChoiceGame.QuestionList;
-import hoyley.gshow.model.Player;
 import hoyley.gshow.model.state.GlobalState;
+import hoyley.gshow.serializers.ChoiceQuestionDeserializer;
+import hoyley.gshow.serializers.NativeChoiceQuestionDeserializer;
+import hoyley.gshow.serializers.OpenTriviaDbDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 @Component
 public class Configurator {
 
-    private final QuestionList questionList;
-    private final GlobalState globalState;
+    public enum QuestionSourceFormat {
+        OpenTDB,
+        Native
+    }
 
     @Autowired
-    public Configurator(QuestionList questionList, GlobalState globalState) {
-        this.questionList = questionList;
-        this.globalState = globalState;
-    }
+    private QuestionList questionList;
+
+    @Value("${game.questionSource.format}")
+    private QuestionSourceFormat questionSourceFormat;
+
+    @Value("${game.questionSource.file}")
+    private Resource questionSourceFile;
+
+    private ChoiceQuestionDeserializer deserializer;
 
     public void configure() {
-        questionList.addChoiceQuestion(new ChoiceQuestion() {{
-            setQuestion("How many apples?");
-            setAnswer("3");
-            setOptionStrings(Arrays.asList("1", "2", "3", "4"));
-        }});
 
-        questionList.addChoiceQuestion(new ChoiceQuestion() {{
-            setQuestion("How many Oranges?");
-            setAnswer("3");
-            setOptionStrings(Arrays.asList("1", "2", "3", "4", "5"));
-        }});
+        switch (questionSourceFormat) {
+            case OpenTDB:
+                deserializer = new OpenTriviaDbDeserializer();
+                break;
+            case Native:
+                deserializer = new NativeChoiceQuestionDeserializer();
+                break;
+            default:
+                throw new RuntimeException(String.format("Unrecognized 'game.questionSource.format' [%s].",
+                    questionSourceFormat));
+        }
 
-        questionList.addChoiceQuestion(new ChoiceQuestion() {{
-            setQuestion("How many Oranges?");
-            setAnswer("3");
-            setOptionStrings(Arrays.asList("1", "2", "3", "4", "5", "6"));
-        }});
-
-        questionList.addChoiceQuestion(new ChoiceQuestion() {{
-            setQuestion("How many Oranges?");
-            setAnswer("3");
-            setOptionStrings(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10"));
-        }});
-
-        questionList.addChoiceQuestion(new ChoiceQuestion() {{
-            setQuestion("How many Oranges?");
-            setAnswer("3");
-            setOptionStrings(Arrays.asList("3", "There are two apples", "There are two apples", "There are two apples", "There are two apples", "6", "7", "8", "9", "10"));
-        }});
-
-        globalState.getRegisteredPlayers().add(new Player() {{
-            setId("lskadjfas");
-            setNickname("Default Player");
-            setSessionId("123");
-        }});
-
-        globalState.getRegisteredPlayers().add(new Player() {{
-            setId("hsdfga");
-            setNickname("Default Player 2");
-            setSessionId("125");
-        }});
+        loadInternalResource();
     }
 
-    public void configureFromResources() {
+    public void loadInternalResource() {
+        InputStream stream;
+
         try {
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("ChoiceQuestions.txt");
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode node = null;
-
-            node = mapper.readTree(stream);
-            configureFromJson(node);
+            stream = questionSourceFile.getInputStream();
         } catch (IOException ex) {
-            throw new RuntimeException("Error reading json file.", ex);
+            throw new RuntimeException(String.format("Could not load InputStream."));
         }
-
-    }
-
-    private void configureFromJson(JsonNode node) {
-        if (node.isArray() == false) {
-            throw new RuntimeException("Expected outer array.");
-        }
-
-        List<ChoiceQuestion> questions = new LinkedList<>();
-
-        node.forEach(question -> {
-            ChoiceQuestion newQuestion = new ChoiceQuestion();
-            newQuestion.setQuestion(HtmlUtils.htmlUnescape(question.get("question").asText()));
-            newQuestion.setAnswer(HtmlUtils.htmlUnescape(question.get("correct_answer").asText()));
-
-            List<String> answers = new LinkedList<>();
-            for (JsonNode answerNode : question.get("incorrect_answers")) {
-                answers.add(HtmlUtils.htmlUnescape(answerNode.asText()));
-            }
-            answers.add(newQuestion.getAnswer());
-            Collections.shuffle(answers);
-            newQuestion.setOptionStrings(answers);
-
-            questions.add(newQuestion);
-        });
-
-        Collections.shuffle(questions);
-
+        List<ChoiceQuestion> questions = deserializer.deserialize(stream);
         questions.forEach(q -> questionList.addChoiceQuestion(q));
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 public class ChoiceGameState {
 
     private String question;
+    private String imagePath;
     private List<ChoiceOption> options;
     private Collection<PlayerAnswer> playerAnswers;
     private String answer;

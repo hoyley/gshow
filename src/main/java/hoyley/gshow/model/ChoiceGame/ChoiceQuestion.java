@@ -10,6 +10,7 @@ public class ChoiceQuestion implements Cloneable {
 
     private String question;
     private String answer;
+    private String imagePath;
     private List<ChoiceOption> options;
 
     @Override
@@ -18,6 +19,7 @@ public class ChoiceQuestion implements Cloneable {
         newQuestion.setAnswer(answer);
         newQuestion.setOptionList(options);
         newQuestion.setQuestion(question);
+        newQuestion.setImagePath(imagePath);
         return newQuestion;
     }
 

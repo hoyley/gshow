@@ -17,6 +17,7 @@
       "difficulty":"easy",
       "question":"Which city is the capital of the United States of America?",
       "correct_answer":"Washington D.C",
+      "image_path":"drawing_robotBaloon.jpeg",
       "incorrect_answers":[
          "Seattle",
          "Albany",

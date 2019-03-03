@@ -22,7 +22,7 @@ public class GameShowController {
         this.servletHelper = servletHelper;
         state.setScreen(GlobalState.Screen.Welcome);
 
-        configurator.configureFromResources();
+        configurator.configure();
     }
 
     @RequestMapping("/state")

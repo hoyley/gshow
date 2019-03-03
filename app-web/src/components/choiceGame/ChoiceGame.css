@@ -14,3 +14,12 @@
 .questionContainer {
     padding: 4%;
 }
+
+.questionImage {
+    max-width: 80%;
+    max-height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    display: block;
+}
