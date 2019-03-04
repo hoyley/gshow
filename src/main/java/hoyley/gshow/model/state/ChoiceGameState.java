@@ -1,8 +1,8 @@
 package hoyley.gshow.model.state;
 
-import hoyley.gshow.model.ChoiceGame.ChoiceOption;
-import hoyley.gshow.model.ChoiceGame.GameStatus;
-import hoyley.gshow.model.ChoiceGame.PlayerAnswer;
+import hoyley.gshow.model.choiceGame.ChoiceOption;
+import hoyley.gshow.model.choiceGame.GameStatus;
+import hoyley.gshow.model.choiceGame.PlayerAnswer;
 import lombok.Data;
 
 import java.util.Collection;

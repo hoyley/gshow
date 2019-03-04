@@ -1,8 +1,7 @@
 package hoyley.gshow;
 
-import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
-import hoyley.gshow.model.ChoiceGame.QuestionList;
-import hoyley.gshow.model.state.GlobalState;
+import hoyley.gshow.model.choiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.serializers.ChoiceQuestionDeserializer;
 import hoyley.gshow.serializers.NativeChoiceQuestionDeserializer;
 import hoyley.gshow.serializers.OpenTriviaDbDeserializer;

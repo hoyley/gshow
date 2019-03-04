@@ -1,7 +1,7 @@
 package hoyley.gshow.serializers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.ChoiceQuestion;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.Collections;

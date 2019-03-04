@@ -4,10 +4,10 @@ import hoyley.gshow.games.ChoiceGame;
 import hoyley.gshow.games.TimedGame;
 import hoyley.gshow.games.TimedGameConfig;
 import hoyley.gshow.helpers.HttpRequestHelper;
-import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
-import hoyley.gshow.model.ChoiceGame.PlayerAnswer;
+import hoyley.gshow.model.choiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.PlayerAnswer;
 import hoyley.gshow.model.Player;
-import hoyley.gshow.model.ChoiceGame.QuestionList;
+import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.model.state.ChoiceGameState;
 import hoyley.gshow.model.state.GlobalState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,13 @@ public class ChoiceGameController {
     }
 
     public void startGame() {
+        // If the game is over, go back to the welcome screen
+        if (questionList.isDone()) {
+            killGame();
+            return;
+        }
         startGame(questionList.nextQuestion());
+
     }
 
     public void startGame(int questionIndex) {
@@ -99,7 +105,7 @@ public class ChoiceGameController {
             TimedGame.DecreaseFunction::even,
             TimedGame.DecreaseFunction.evenByPercentage(0.5),
             this::onGameStateChange);
-        choiceGame.startGame();
+        choiceGame.play();
     }
 
     private void onGameStateChange() {

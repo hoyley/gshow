@@ -1,4 +1,4 @@
-package hoyley.gshow.model.ChoiceGame;
+package hoyley.gshow.model.choiceGame;
 
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import java.util.*;
 public class QuestionList {
 
     private final ArrayList<ChoiceQuestion> choiceQuestions = new ArrayList<>();
-    private int currentQuestionIndex = 0;
+    private int currentQuestionIndex = -1;
 
     public void addChoiceQuestion(ChoiceQuestion question) {
         choiceQuestions.add(question);
@@ -32,5 +32,13 @@ public class QuestionList {
 
     public int getTotalQuestions() {
         return choiceQuestions.size();
+    }
+
+    public void reset() {
+        currentQuestionIndex = -1;
+    }
+
+    public boolean isDone() {
+        return currentQuestionIndex == choiceQuestions.size() -1;
     }
 }

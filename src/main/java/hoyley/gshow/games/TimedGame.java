@@ -41,7 +41,7 @@ public abstract class TimedGame {
         return isGameOver;
     }
 
-    public void startGame() {
+    public void play() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -53,6 +53,10 @@ public abstract class TimedGame {
             }
         }, 1000, 1000);
         onStateChanged.run();
+    }
+
+    public void pause() {
+        timer.cancel();
     }
 
     protected void onCountDown() {

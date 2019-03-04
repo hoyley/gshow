@@ -3,8 +3,8 @@ package hoyley.gshow.serializers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hoyley.gshow.model.ChoiceGame.ChoiceOption;
-import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.ChoiceOption;
+import hoyley.gshow.model.choiceGame.ChoiceQuestion;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,5 +49,6 @@ public class NativeChoiceQuestionDeserializer extends ChoiceQuestionDeserializer
             Collections.shuffle(options);
             q.setOptions(options);
         });
+        Collections.shuffle(questions);
     }
 }

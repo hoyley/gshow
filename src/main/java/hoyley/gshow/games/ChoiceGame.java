@@ -1,8 +1,8 @@
 package hoyley.gshow.games;
 
-import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.ChoiceQuestion;
 import hoyley.gshow.model.Player;
-import hoyley.gshow.model.ChoiceGame.PlayerAnswer;
+import hoyley.gshow.model.choiceGame.PlayerAnswer;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

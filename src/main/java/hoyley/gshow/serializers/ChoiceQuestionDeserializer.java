@@ -2,7 +2,7 @@ package hoyley.gshow.serializers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hoyley.gshow.model.ChoiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.ChoiceQuestion;
 
 import java.io.IOException;
 import java.io.InputStream;

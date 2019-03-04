@@ -10,11 +10,11 @@ export default class extends React.Component {
 
   answeredIncorrectly() {
     const answer = this.props.myAnswer;
-    return answer && !answer.correct;
+    return answer && !!answer.answer && !answer.correct;
   }
 
   noAnswer() {
-    return !this.props.myAnswer;
+    return !this.props.myAnswer || !this.props.myAnswer.answer;
   }
 
   renderAnswer() {
