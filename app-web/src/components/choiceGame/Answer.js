@@ -49,8 +49,9 @@ export default class extends React.Component {
 
         {
           correct &&
-          <div
-            className="answerMessage correct">{"You answered correctly in " + elapsedTime + " seconds and gained " + points + " points!"}</div>
+            <div className="answerMessage correct">
+              {"Correct! — (" + elapsedTime + "s, " + points + " pts)"}
+            </div>
         }
 
         {
@@ -60,7 +61,7 @@ export default class extends React.Component {
 
         {
           noneAnswer &&
-          <div className="answerMessage noAnswer">You didn't answer in time</div>
+          <div className="answerMessage noAnswer">No answer</div>
         }
       </div>
 

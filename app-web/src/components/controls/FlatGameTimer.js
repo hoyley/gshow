@@ -19,8 +19,8 @@ export default class extends React.Component {
     const points = this.props.remainingPoints;
     
     return <ProgressBar className={this.props.className}>
-      <ProgressBar striped variant="success" now={time / 2} max={this.state.maxTime} key={1} label={'Time: ' + time} />
-      <ProgressBar striped variant="warning" now={points / 2} max={this.state.maxPoints} key={2} label={'Points: ' + points} />
+      <ProgressBar variant="success" now={time / 2} max={this.state.maxTime} key={1} label={'Time: ' + time} />
+      <ProgressBar variant="warning" now={points / 2} max={this.state.maxPoints} key={2} label={'Points: ' + points} />
     </ProgressBar>
   }
 }

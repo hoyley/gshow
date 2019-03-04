@@ -1,10 +1,10 @@
 
 .answerText {
-    font: 600 3.125em/1.125 'Rubik', sans-serif;
-    color: black;
-
+    font: 600 2.5em/1.125 'Rubik', sans-serif;
+    margin-bottom: .5em;
+    color: var(--text);
     text-align: center;
-    transition: all var(--answer-delay) ease 0s;
+    transition: all var(--answer-delay) ease .3s;
     transition-delay: var(--answer-delay);
 }
 
@@ -22,7 +22,6 @@
 .answer {
     animation: var(--answer-delay) popIn;
     animation-fill-mode: forwards;
-    color: var(--right-color);
 }
 
 @keyframes revealAnswer {
@@ -64,7 +63,7 @@
 @keyframes revealIncorrect {
     99% {
         text-decoration: none;
-        color: var(--text);
+        color:  var(--text);
     }
     100% {
         text-decoration: line-through;
@@ -82,15 +81,19 @@
     text-align: center;
     animation: var(--answer-delay) popIn;
     animation-fill-mode: forwards;
+    font: 600 1.5em/1.125 'Rubik', sans-serif;
 }
+
 .answerMessage.correct {
     background-color: green;
     color: var(--white);
 }
+
 .answerMessage.incorrect {
     background-color: var(--wrong-color);
     color: var(--white);
 }
+
 .answerMessage.noAnswer {
     background-color: var(--gray);
     color: var(--white);

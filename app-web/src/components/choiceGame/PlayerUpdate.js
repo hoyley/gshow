@@ -9,14 +9,14 @@ export default (props) => {
   const rootClass = props.className || "";
 
   return <div className={rootClass + " playerAnswer"}>
-    <label className="updateName">{ props.playerName}</label>
-    {
-      props.answer && props.correct
-        && <label className="updateScore">{ points }</label>
-    }
+    <label className="updateName">{props.playerName}</label>
     {
       props.answer
         && <label className={answerClass}>{ props.answer }</label>
+    }
+    {
+      props.answer && props.correct
+      && <label className="updateScore">{ points }</label>
     }
   </div>
 };

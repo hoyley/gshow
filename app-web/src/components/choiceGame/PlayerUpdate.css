@@ -1,41 +1,49 @@
 
 .playerAnswer {
-    margin: 2px;
     display: flex;
     flex-wrap: wrap;
-    overflow: hidden;
-    height: 62px;
+    flex-direction: row;
+    height: 60px;
     color: var(--text);
-    padding: 7px;
-    border-color: var(--text);
+    border-color: var(--text-25);
     border-width: 1px;
     border-style: solid;
-    border-radius: 12px;
+    border-radius: 6px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 .updateName {
-    flex: 50%;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-right: 40px;
+    white-space: nowrap;
+    margin: 0;
+    height: 1.6em;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
 }
 
 .updateScore {
-    background: var(--text);
+    background: var(--gray);
     border-radius: 12px;
     padding: 0 12px;
     color: var(--bright);
-    margin: 0px
+    font-size: .9em;
+    margin: 0;
+    text-align: right;
 }
 
 .updateAnswer {
-    flex: 50%;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-right: 40px;
+    white-space: nowrap;
     color: var(--right-color);
-    width: 100%;
-    text-align: center;
+    margin: 0;
+    width: 80%;
+    height: 30px;
+    flex: 50%;
 }
 
 .updateIncorrect {

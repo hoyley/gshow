@@ -4,11 +4,13 @@
     width:100%;
     align-content: stretch;
     justify-content: space-between;
-    padding: 5px;
+    padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .registrationLabel {
-    flex: 0 0 80px;
+    flex: 0 0 0 0;
     padding-top: 10px;
     text-align: center;
 }
