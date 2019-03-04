@@ -32,8 +32,13 @@ export default class extends Component {
           !this.props.isAdmin && !this.props.myPlayer &&
             <PlayerRegistration/>
         }
-        <h2 className="title">Active Centrons</h2>
-        <ListGroup>{playerList}</ListGroup>
+        {
+          players.length > 0 &&
+            <div>
+              <h2 className="title">Active Centrons</h2>
+              <ListGroup>{playerList}</ListGroup>
+            </div>
+        }
       </div>
     );
   }

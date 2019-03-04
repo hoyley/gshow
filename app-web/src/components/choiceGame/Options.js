@@ -73,11 +73,13 @@ export default class extends Component {
         <div className="optionsContainer">
           {
             this.props.options.map(option =>
-              <button className={this.getClassName(option)}
-                      onClick={() => this.handleChoice(option)}
-                      disabled={this.optionDisabled(option)}
-                      style={buttonStyle}
-              >{option.option}</button>
+              <div style={buttonStyle}
+                   className="optionContainer">
+                <button className={this.getClassName(option)}
+                        onClick={() => this.handleChoice(option)}
+                        disabled={this.optionDisabled(option)}
+                >{option.option}</button>
+              </div>
             )
           }
         </div>

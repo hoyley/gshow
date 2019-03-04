@@ -3,8 +3,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 470px;
-    
+    min-width: 450px;
+    color: var(--text);
 }
 
 .adminPanelContent .btn {

@@ -1,7 +1,7 @@
 
 .answerText {
     font: 600 2.5em/1.125 'Rubik', sans-serif;
-    margin-bottom: .5em;
+    margin-bottom: .2em;
     color: var(--text);
     text-align: center;
     transition: all var(--answer-delay) ease .3s;
@@ -10,7 +10,7 @@
 
 .incorrectAnswer {
     text-decoration: none;
-    color: black;
+    color: var(--text);
     animation: var(--answer-delay) revealIncorrect;
     animation-fill-mode: forwards;
 }
@@ -85,16 +85,16 @@
 }
 
 .answerMessage.correct {
-    background-color: green;
-    color: var(--white);
+    background-color: var(--right-color);
+    color: var(--background);
 }
 
 .answerMessage.incorrect {
     background-color: var(--wrong-color);
-    color: var(--white);
+    color: var(--text);
 }
 
 .answerMessage.noAnswer {
-    background-color: var(--gray);
-    color: var(--white);
+    background-color: var(--neutral-background);
+    color: var(--text);
 }

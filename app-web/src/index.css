@@ -13,12 +13,13 @@ code {
 }
 
 :root {
-  --background: rgb(255, 255, 255);
-  --text: rgb(58, 61, 54);
-  --text-25: rgba(58, 61, 54, .25);
-  --highlight: rgb(211, 211, 211);
-  --bright: rgb(255, 255, 255);
-  --right-color: green;
-  --wrong-color: red;
+  --background: #1f2833;
+  --text: #c5c6c7;
+  --border: #6f2232;
+  --button-background: var(--background);
+  --button-highlight: var(--text);
+  --neutral-background: gray;
+  --right-color: #afd275;
+  --wrong-color: #c3073f;
   --answer-delay: 2s;
 }

@@ -55,7 +55,7 @@ export default class extends React.Component {
         <label>Admin Mode ({this.props.currentGameIndex}): </label>
         <Button disabled={this.props.currentGameIndex <= 0} onClick={this.previous}>Previous</Button>
         <Button onClick={this.next}>Next</Button>
-        <Button onClick={this.end}>End Current</Button>
+        <Button onClick={this.end}>End</Button>
         <Form className="guessTimeInput"
               onSubmit={this.handleGuessTime}>
           <Form.Control type="text"
