@@ -23,12 +23,7 @@ export default class extends React.Component {
 
     return <div>
       {
-        this.answeredCorrectly()
-          ? <div className="answerText correctAnswer">{myAnswer}</div>
-          : <div>
-              <div className="answerText incorrectAnswer">{myAnswer}</div>
-              <div className="answerText answer">{actualAnswer}</div>
-            </div>
+        <div className="answerText answer">{actualAnswer}</div>
       }
     </div>
   }
@@ -50,7 +45,7 @@ export default class extends React.Component {
         {
           correct &&
           <div
-            className="answerMessage correct">{"You answered correctly in " + elapsedTime + " seconds and gained " + points + " points!"}</div>
+            className="answerMessage correct">{"Correct! — (" + elapsedTime + "s, " + points + " pts)"}</div>
         }
 
         {
@@ -60,7 +55,7 @@ export default class extends React.Component {
 
         {
           noneAnswer &&
-          <div className="answerMessage noAnswer">You didn't answer in time</div>
+          <div className="answerMessage noAnswer">No answer.</div>
         }
       </div>
 

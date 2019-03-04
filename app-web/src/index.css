@@ -13,8 +13,9 @@ code {
 }
 
 :root {
-  --background: rgb(255, 191, 61);
+  --background: rgb(255, 255, 255);
   --text: rgb(58, 61, 54);
+  --text-25: rgba(58, 61, 54, .25);
   --highlight: rgb(211, 211, 211);
   --bright: rgb(255, 255, 255);
   --right-color: green;

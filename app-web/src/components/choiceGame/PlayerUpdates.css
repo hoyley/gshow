@@ -3,7 +3,6 @@
     animation: var(--answer-delay) popIn;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
 }
 
 .playerUpdates>* {

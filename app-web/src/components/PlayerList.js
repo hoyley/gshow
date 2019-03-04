@@ -17,16 +17,18 @@ export default class extends Component {
 
     return (
       <div className="playerList">
+      <div className="playerRegistration">
+        {this.props.myPlayer
+          ? <div className="playerWelcome">{`Welcome, ${this.props.myPlayer.nickname}.`}</div>
+          : this.props.isAdmin
+              ? <div className="playerWelcome">{`You have all of the powers, Admin!`}</div>
+              : <PlayerRegistration/>
+        }
         <h2 className="title">Active Centrons</h2>
+
         <ListGroup>{playerList}</ListGroup>
 
-        <div className="playerRegistration">
-          {this.props.myPlayer
-            ? <div>{`Welcome ${this.props.myPlayer.nickname}`}</div>
-            : this.props.isAdmin
-                ? <div>{`You have all of the powers!`}</div>
-                : <PlayerRegistration/>
-          }
+
         </div>
       </div>
     );

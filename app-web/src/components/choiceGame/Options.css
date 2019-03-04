@@ -11,7 +11,6 @@
     padding: 20px;
     border-radius: 6px;
     display: inline-block;
-
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     font-weight: 700;
@@ -22,7 +21,6 @@
     background: var(--text);
     cursor: pointer;
     color: var(--bright);
-
 }
 
 .option:not([disabled]) {
@@ -31,7 +29,6 @@
 
 .option[disabled] {
     font-weight: 700;
-    letter-spacing: 3px;
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     transition: all 0.3s ease 0s;
@@ -51,7 +48,7 @@
 }
 
 .optionMyChoice {
-    background: var(--background);
+    background: var(--text);
     color: var(--bright);
     opacity: 1 !important;
 }

@@ -2,39 +2,41 @@
 .playerList {
     color: var(--text);
     background-color: var(--background);
-    padding: 1em;
-    font: 600 1em 'Rubik', sans-serif;
+    padding: 1.5em;
+    font: 600 1em, sans-serif;
 }
 
 .playerList .title {
-    border-bottom: 1px solid var(--text);
+    border-bottom: 1px solid var(--text-25);
     font-weight: 600;
     padding-bottom: 20px;
-    font: 600 2em/1 'Rubik', sans-serif;
+    font: 600 1.5em/1 'Rubik', sans-serif;
+    margin-bottom: 0;
 }
 
 .playerList .list-group {
-    padding-top: 5px;
-    padding-bottom: 20px;
+    border-bottom: 1px solid var(--text-25);
 }
 
 .playerList .list-group-item {
     list-style: none;
     background-color: transparent;
     border: none;
-    margin: 6px 0;
-    padding: 0;
+    padding: 8px 0;
 }
 
 .playerScore {
-    background: var(--text);
+    background: var(--gray);
     border-radius: 12px;
     padding: 0 12px;
     Float: right;
     color: var(--bright);
+    font-size: .9em;
 }
 
 .playerRegistration {
-    border-top: 1px solid var(--text);
-    padding-top: 40px;
+}
+
+.playerWelcome {
+  padding-bottom: 1em;
 }
