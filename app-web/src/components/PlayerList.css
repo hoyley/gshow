@@ -1,7 +1,6 @@
 .playerList {
     color: var(--text);
-    background-color: var(--background);
-    padding: 10px 1.5em;
+    padding: 30px 1.5em 0px 1.5em;
 }
 
 .playerList .title {

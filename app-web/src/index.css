@@ -14,12 +14,13 @@ code {
 
 :root {
   --background: #1f2833;
-  --text: #c5c6c7;
+  --alt-background: #424e50;
+  --text: white;
   --border: #6f2232;
+  --neutral-background: #b19f9e;
+  --right-color: #479761;
+  --wrong-color: #6f2232;
+  --answer-delay: 2s;
   --button-background: var(--background);
   --button-highlight: var(--text);
-  --neutral-background: gray;
-  --right-color: #afd275;
-  --wrong-color: #c3073f;
-  --answer-delay: 2s;
 }
