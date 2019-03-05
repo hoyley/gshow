@@ -1,10 +1,11 @@
 .playerList {
     color: var(--text);
     padding: 30px 1.5em 0px 1.5em;
+    background-color: var(--alt-background);
 }
 
 .playerList .title {
-    border-bottom: 2px solid var(--border);
+    border-bottom: 2px solid rgba(var(--background-raw), 0.5);
     font-weight: 600;
     padding-bottom: 20px;
     font: 600 1.5em/1 'Rubik', sans-serif;
@@ -12,7 +13,7 @@
 }
 
 .playerList .list-group {
-    border-bottom: 2px solid var(--border);
+    border-bottom: 2px solid rgba(var(--background-raw), 0.5);
 }
 
 .playerList .list-group-item {
@@ -20,21 +21,23 @@
     background-color: transparent;
     border: none;
     padding: 8px 0;
+    display: flex;
 }
 
 .playerName {
-    max-width: 70%;
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .playerScore {
-    background: var(--neutral-background);
+    background-color: rgba(var(--background-raw), 0.75);
+    color: var(--text);
     border-radius: 12px;
     padding: 0 12px;
-    Float: right;
-    color: var(--text);
+    margin: 1px 5px 0 auto;
     font-size: .9em;
+    height: 22px;
 }
 
 .playerIsMe {

@@ -1,26 +1,27 @@
-body {
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  box-sizing: border-box;
+html body {
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    box-sizing: border-box;
+    background-color: var(--background);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 :root {
-  --background: #1f2833;
-  --alt-background: #424e50;
-  --text: white;
-  --border: #6f2232;
-  --neutral-background: #b19f9e;
-  --right-color: #479761;
-  --wrong-color: #6f2232;
-  --answer-delay: 2s;
-  --button-background: var(--background);
-  --button-highlight: var(--text);
+    --background-raw: 31, 40, 51;
+    --background: rgb(var(--background-raw));
+    --neutral-background: rgb(128, 128, 128);
+    --alt-background: rgba(255, 255, 255, 0.075);
+    --text: white;
+    --right-color: #479761;
+    --wrong-color: #6f2232;
+    --answer-delay: 2s;
+    --button-background: var(--background);
+    --button-highlight: var(--text);
 }

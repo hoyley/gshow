@@ -21,7 +21,7 @@ const getMainScreen = (props) => {
 }
 
 export default (props) => {
-  return <Container fluid={true}>
+  return <Container className="screen" fluid={true}>
     <Row className="layoutRow">
       <Col className="layoutCol" sm={12} md={8}>
         <div className="gameArea">

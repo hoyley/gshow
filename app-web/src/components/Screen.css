@@ -10,7 +10,7 @@
 .layoutCol {
     padding-left: 0px !important;
     padding-right: 0px !important;
-    background-color: var(--alt-background);
+
 }
 
 .screen {
@@ -21,7 +21,6 @@
 .gameArea {
     height: 100%;
     display: flex;
-    background-color: var(--background);
     flex-direction: column;
 }
 

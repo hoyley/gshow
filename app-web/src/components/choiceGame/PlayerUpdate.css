@@ -5,14 +5,17 @@
     flex-direction: row;
     height: 60px;
     color: var(--text);
-    border-color: var(--border);
-    border-width: 1px;
-    border-style: solid;
     border-radius: 6px;
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-left: 5px;
     margin: 3px;
+    background-color: var(--neutral-background);
+}
+
+.playerAnswerCorrect {
+    background-color: var(--right-color);
+}
+
+.playerAnswerIncorrect {
+    background-color: var(--wrong-color);
 }
 
 .updateName {
@@ -24,16 +27,18 @@
     width: 100%;
     max-width: 100%;
     text-align: center;
+    border-radius: 6px 6px 0 0;
+    background-color: rgba(var(--background-raw), 0.3);
 }
 
 .updateScore {
-    background: var(--neutral-background);
+    background-color: rgba(var(--background-raw), 0.3);
     border-radius: 12px;
     padding: 0 12px;
+    margin: 6px 5px 0 0;
     color: var(--text);
     font-size: .9em;
-    margin: 0;
-    text-align: right;
+    line-height: 20px;
 }
 
 .updateAnswer {
@@ -45,11 +50,8 @@
     width: 80%;
     height: 30px;
     flex: 50%;
-}
-
-.updateIncorrect {
-    text-decoration: line-through;
-    color: var(--wrong-color);
+    color: var(--text);
+    padding: 5px 0 0 5px;
 }
 
 .updateTime {
