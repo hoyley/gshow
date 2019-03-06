@@ -100,8 +100,11 @@ public class ChoiceGameController {
 
     public void startGame(ChoiceQuestion question) {
         killGame();
+
+        int guessTimeSecsAdjusted = (int)(guessTimeSecs * question.getTimeMultiplier());
+
         choiceGame = new ChoiceGame(question,
-            TimedGameConfig.evenCountDown(guessTimeSecs, 500),
+            TimedGameConfig.evenCountDown(guessTimeSecsAdjusted, 500),
             TimedGame.DecreaseFunction::even,
             TimedGame.DecreaseFunction.evenByPercentage(0.5),
             this::onGameStateChange);

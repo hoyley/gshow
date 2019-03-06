@@ -12,7 +12,7 @@
 .option {
     background: var(--button-background);
     color: var(--text);
-    padding: 20px;
+    padding: 15px;
     border-radius: 6px;
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
@@ -20,6 +20,7 @@
     transition: all 0.3s ease 0s;
     width: 100%;
     height: 100%;
+    font-size: 2em;
 }
 
 .option:hover:not([disabled]) {

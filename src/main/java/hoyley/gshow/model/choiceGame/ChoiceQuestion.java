@@ -1,5 +1,7 @@
 package hoyley.gshow.model.choiceGame;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +14,14 @@ public class ChoiceQuestion implements Cloneable {
     private String answer;
     private String imagePath;
     private List<ChoiceOption> options;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private double timeMultiplier = 1;
+    
+    // This property is useful for the `game.questions.enforceAnswerFairness` application configuration
+    // value. Target ID will refer to the question's subject or target (the person it's about) if the
+    // answer doesn't do so.
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String targetId;
 
     @Override
     public Object clone() {
@@ -32,5 +42,13 @@ public class ChoiceQuestion implements Cloneable {
     public void setOptionList(List<ChoiceOption> options) {
         List<String> optionStrings = options.stream().map(o -> o.getOption()).collect(Collectors.toList());
         setOptionStrings(optionStrings);
+    }
+
+    public String getTargetIdOrAnswer() {
+        if (this.targetId != null) {
+            return targetId;
+        } else {
+            return answer;
+        }
     }
 }

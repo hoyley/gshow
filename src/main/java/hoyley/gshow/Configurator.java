@@ -1,5 +1,6 @@
 package hoyley.gshow;
 
+import hoyley.gshow.helpers.QuestionHelper;
 import hoyley.gshow.model.choiceGame.ChoiceQuestion;
 import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.serializers.ChoiceQuestionDeserializer;
@@ -31,7 +32,14 @@ public class Configurator {
     @Value("${game.questionSource.file}")
     private Resource questionSourceFile;
 
+    @Value("${game.questions.enforceAnswerFairness}")
+    private boolean enforceAnswerFairness;
+
+    @Value("${game.questions.maxOptions:10}")
+    private int maxOptions;
+
     private ChoiceQuestionDeserializer deserializer;
+
 
     public void configure() {
 
@@ -47,10 +55,10 @@ public class Configurator {
                     questionSourceFormat));
         }
 
-        loadInternalResource();
+        loadQuestions();
     }
 
-    public void loadInternalResource() {
+    public List<ChoiceQuestion> loadInternalResource() {
         InputStream stream;
 
         try {
@@ -58,7 +66,15 @@ public class Configurator {
         } catch (IOException ex) {
             throw new RuntimeException(String.format("Could not load InputStream."));
         }
-        List<ChoiceQuestion> questions = deserializer.deserialize(stream);
+        return deserializer.deserialize(stream);
+    }
+
+    private void loadQuestions() {
+        List<ChoiceQuestion> questions = loadInternalResource();
+        if (enforceAnswerFairness) {
+            questions = QuestionHelper.enforceTargetFairness(questions);
+        }
+        QuestionHelper.processOptions(questions, maxOptions);
         questions.forEach(q -> questionList.addChoiceQuestion(q));
     }
 }
