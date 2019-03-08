@@ -22,15 +22,16 @@ const getMainScreen = (props) => {
 
 export default (props) => {
   return <Container className="screen" fluid={true}>
+    { props.admin &&
+        <AdminPanel className="adminPanel"
+                    currentGameIndex={props.gameConfig.currentQuestion} />
+    }
     <Row className="layoutRow">
       <Col className="layoutCol" sm={12} md={8}>
         <div className="gameArea">
           <div className="gameAreaContent">
             { getMainScreen(props) }
           </div>
-          { props.admin &&
-              <AdminPanel className="adminPanel"
-                          currentGameIndex={props.gameConfig.currentQuestion} /> }
         </div>
       </Col>
       <Col className="layoutCol" sm={12} md={4}>

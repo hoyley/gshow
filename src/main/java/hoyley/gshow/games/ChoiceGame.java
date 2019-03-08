@@ -3,6 +3,8 @@ package hoyley.gshow.games;
 import hoyley.gshow.model.choiceGame.ChoiceQuestion;
 import hoyley.gshow.model.Player;
 import hoyley.gshow.model.choiceGame.PlayerAnswer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class ChoiceGame extends TimedGame {
 
+    private final static Logger logger = LoggerFactory.getLogger(ChoiceGame.class);
     private final ChoiceQuestion question;
     private final ChoiceQuestion originalQuestion;
     private final DecreaseFunction optionReduction;
@@ -40,7 +43,8 @@ public class ChoiceGame extends TimedGame {
 
     public void submitAnswer(String answer, Player player) {
         if (answers.containsKey(player)) {
-            throw new RuntimeException("Attempted duplicate submission.");
+            logger.debug("Duplicate answer submission detected from player [{}].", player.getNickname());
+            return;  // We're going to ignore this silently
         }
 
         answers.put(player, new PlayerAnswer() {{
