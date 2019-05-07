@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedList;
 import java.util.List;
 
-@Component
 public class GlobalState {
 
     public enum Screen {
@@ -18,7 +17,7 @@ public class GlobalState {
 
     private final List<Player> registeredPlayers = new LinkedList<>();
     private ChoiceGameState choiceGameState = new ChoiceGameState();
-    private Screen screen;
+    private Screen screen = Screen.Welcome;
 
     @JsonIgnore
     private String adminSessionId;

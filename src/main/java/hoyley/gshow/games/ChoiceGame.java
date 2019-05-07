@@ -83,10 +83,4 @@ public class ChoiceGame extends TimedGame {
             question.getOptions().get(indexToRemove).setEliminated(true);
         }
     }
-
-    @Override
-    public boolean isGameOver() {
-        return super.isGameOver();
-        
-    }
 }

@@ -3,6 +3,8 @@ package hoyley.gshow.games;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,30 +13,31 @@ public abstract class TimedGame {
     private static final Logger logger = LoggerFactory.getLogger(TimedGame.class);
 
     private final TimedGameConfig config;
-    private final Timer timer = new Timer();
+    private final Timer timer = new Timer("ChoiceGameTimer", true);
     protected final Runnable onStateChanged;
     private final DecreaseFunction pointReduction;
-    private int secondsRemaining;
-    private int currentPoints;
+    private int secondsDuration;
+    private LocalDateTime endGameTime;
+    private LocalDateTime startGameTime;
     private boolean isGameOver = false;
 
     public TimedGame(TimedGameConfig config, DecreaseFunction pointReduction, Runnable onStateChanged) {
         this.config = config;
         this.pointReduction = pointReduction;
         this.onStateChanged = onStateChanged;
-        secondsRemaining = config.getSeconds();
-        currentPoints = config.getStartingPoints();
+        secondsDuration = config.getSeconds();
     }
 
     public int getSecondsRemaining() {
-        return secondsRemaining;
+        return (int)Math.max(0, LocalDateTime.now().until(endGameTime, ChronoUnit.SECONDS));
     }
 
     public int getSecondsElapsed() {
-        return config.getSeconds() - secondsRemaining;
+        return config.getSeconds() - getSecondsRemaining();
     }
+
     public int getCurrentPoints() {
-        return currentPoints;
+        return pointReduction.compute(config.getStartingPoints(), getTimeFraction());
     }
 
     public boolean isGameOver() {
@@ -42,7 +45,21 @@ public abstract class TimedGame {
     }
 
     public void play() {
-        timer.scheduleAtFixedRate(new TimerTask() {
+        startGameTime = LocalDateTime.now();
+        endGameTime = startGameTime.plusSeconds(secondsDuration);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    gameOver();
+                } catch (Exception ex) {
+                    logger.error("Error in background timer.", ex);
+                }
+            }
+        }, secondsDuration * 1000L);
+
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 try {
@@ -52,6 +69,7 @@ public abstract class TimedGame {
                 }
             }
         }, 1000, 1000);
+
         onStateChanged.run();
     }
 
@@ -59,6 +77,12 @@ public abstract class TimedGame {
         timer.cancel();
     }
 
+    private void countDown() {
+        onCountDown();
+        if (onStateChanged != null) {
+            this.onStateChanged.run();
+        }
+    }
     protected void onCountDown() {
 
     }
@@ -70,22 +94,7 @@ public abstract class TimedGame {
     }
 
     protected double getTimeFraction() {
-        return (double) secondsRemaining / config.getSeconds();
-    }
-
-    private void countDown() {
-        secondsRemaining -= 1;
-
-        currentPoints = pointReduction.compute(config.getStartingPoints(), getTimeFraction());
-
-        // Allow the child class to take action
-        onCountDown();
-
-        if (secondsRemaining == 0) {
-            gameOver();
-        } else {
-            onStateChanged.run();
-        }
+        return (double) getSecondsRemaining() / config.getSeconds();
     }
 
     public interface DecreaseFunction {

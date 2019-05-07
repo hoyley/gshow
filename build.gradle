@@ -28,7 +28,8 @@ ext {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation('org.springframework.boot:spring-boot-starter-data-rest')
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	compileOnly 'org.projectlombok:lombok:1.18.4'
 	annotationProcessor 'org.projectlombok:lombok:1.18.4'
