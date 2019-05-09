@@ -11,7 +11,7 @@ export default class extends React.Component {
   }
 
   getPlayerName(id) {
-    let player = this.props.players && this.props.players.find(p => p.id == id);
+    let player = this.props.players && this.props.players.find(p => p.id === id);
     return player && player.nickname;
   }
 

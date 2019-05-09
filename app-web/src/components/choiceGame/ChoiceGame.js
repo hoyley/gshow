@@ -2,7 +2,6 @@ import React from "react";
 import ChoiceGameOptions from './Options';
 import ChoiceGameAnswer from './Answer';
 import ChoiceGamePlayerUpdates from './PlayerUpdates';
-import service from '../../service/GshowService';
 import './ChoiceGame.css'
 
 const getMyAnswer = (props) => {
@@ -18,7 +17,8 @@ export default (props) => {
     {
       props.gameConfig.imagePath &&
         <img className="questionImage"
-             src={"/images/" + props.gameConfig.imagePath}/>
+             src={"/images/" + props.gameConfig.imagePath}
+             alt="Question" />
     }
 
     {

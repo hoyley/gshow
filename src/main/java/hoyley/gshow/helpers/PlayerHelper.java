@@ -1,39 +1,37 @@
 package hoyley.gshow.helpers;
 
 import hoyley.gshow.model.Player;
-import hoyley.gshow.model.state.GlobalState;
+import hoyley.gshow.model.state.StateFacade;
 
 import java.util.Objects;
 
 public class PlayerHelper {
-    private final GlobalState state;
-    private final Func playerId;
+    private final StateFacade state;
+    private final Func playerSessionId;
 
-    public PlayerHelper(String playerId, GlobalState state) {
-        this(() -> playerId, state);
+    public PlayerHelper(String playerSessionId, StateFacade state) {
+        this(() -> playerSessionId, state);
     }
 
-    public PlayerHelper(Func<String> playerId, GlobalState state) {
+    public PlayerHelper(Func<String> playerSessionId, StateFacade state) {
         this.state = state;
-        this.playerId = playerId;
+        this.playerSessionId = playerSessionId;
+    }
+
+    public String getPlayerSessionId() {
+        return (String)playerSessionId.get();
     }
 
     public Player getPlayer() {
-        return state.getRegisteredPlayers().stream()
-            .filter(p -> p.getSessionId().equals(playerId.get()))
-            .findFirst().orElse(null);
+        return state.getSessionState(this).getMyPlayer();
     }
 
     public boolean isAdmin() {
-        return Objects.equals(playerId.get(), state.getAdminSessionId());
-    }
-
-    public boolean adminIsPresent() {
-        return state.getAdminSessionId() != null;
+        return Objects.equals(playerSessionId.get(), state.getAdminSessionId());
     }
 
     public boolean hasGameControl() {
-        if (adminIsPresent()) {
+        if (state.isAdminActive()) {
             return isAdmin();
         } else {
             return true;

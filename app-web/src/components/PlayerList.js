@@ -8,7 +8,7 @@ export default class extends Component {
   getPlayerClass(player) {
     let playerClass = "playerName";
     if (!!this.props.myPlayer &&
-        player.nickname == this.props.myPlayer.nickname) {
+        player.nickname === this.props.myPlayer.nickname) {
       playerClass += " playerIsMe";
     }
     return playerClass;

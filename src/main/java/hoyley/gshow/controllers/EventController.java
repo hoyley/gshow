@@ -108,7 +108,7 @@ public class EventController {
         try {
             SessionService sessionService = sessionManagementService.getSessionSafe("main");
             PlayerHelper helper = getPlayerHelper(playerSessionId);
-            return mapper.writeValueAsString(sessionService.sessionState(helper));
+            return mapper.writeValueAsString(sessionService.getState().getSessionState(helper));
         } catch (JsonProcessingException ex) {
             throw new RuntimeException("Error writing state to string.", ex);
         }

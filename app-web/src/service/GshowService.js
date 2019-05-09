@@ -22,9 +22,9 @@ class GshowService {
 
     eventSource.onerror = e => {
 
-      if (e.currentTarget.readyState == EventSource.CLOSED) {
+      if (e.currentTarget.readyState === EventSource.CLOSED) {
         console.log(`Error on connection. EventStream is closed for instance [${this.instanceKey}]`);
-      } else if (e.currentTarget.readyState == EventSource.CONNECTING) {
+      } else if (e.currentTarget.readyState === EventSource.CONNECTING) {
         console.log(`Lost connection. EventStream is reconnecting for instance [${this.instanceKey}]`);
       }
     };

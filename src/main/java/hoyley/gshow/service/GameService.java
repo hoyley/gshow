@@ -10,6 +10,7 @@ import hoyley.gshow.model.choiceGame.PlayerAnswer;
 import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.model.state.ChoiceGameState;
 import hoyley.gshow.model.state.GlobalState;
+import hoyley.gshow.model.state.StateFacade;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -19,14 +20,14 @@ import java.util.stream.Collectors;
 
 public class GameService {
 
-    private final GlobalState state;
+    private final StateFacade state;
     private final QuestionList questionList;
     private final int gameOverDelayMillis;
     private final ApplicationEventPublisher publisher;
     private int guessTimeSecs;
     private ChoiceGame choiceGame;
 
-    public GameService(GlobalState state,
+    public GameService(StateFacade state,
                        QuestionList questionList,
                        ApplicationEventPublisher publisher,
                        @Value("${game.overDelayMillis:5000}") int gameOverDelayMillis,
@@ -38,7 +39,7 @@ public class GameService {
         this.publisher = publisher;
     }
 
-    public GlobalState getState() {
+    public StateFacade getState() {
         return state;
     }
 
@@ -57,7 +58,7 @@ public class GameService {
     public AdminControl asAdmin(PlayerHelper playerHelper) {
         if (playerHelper.hasGameControl() == false) {
             throw new RuntimeException(String.format("Player [%s] attempted to control the game but has no control.",
-                playerHelper.getPlayer().getId()));
+                playerHelper.getPlayerSessionId()));
         }
         return new AdminControl(playerHelper, this);
     }
@@ -166,10 +167,11 @@ public class GameService {
                 .map(p -> p.cloneSecret())
                 .collect(Collectors.toList()));
         }
-        state.setChoiceGameState(screen);
-        state.setScreen(GlobalState.Screen.ChoiceGame);
 
-        publish();
+        state.batch(s -> {
+            s.setChoiceGameState(screen);
+            s.setScreen(GlobalState.Screen.ChoiceGame);
+        });
     }
 
     private void initiateGameComplete(ChoiceGameState screen) {
@@ -177,13 +179,11 @@ public class GameService {
         screen.setPlayerAnswers(getPlayerAnswers());
         tallyPoints();
         endGameConditionally();
-        
-        publish();
     }
 
     private void endGameConditionally() {
         // Only trigger the delay if the admin is not logged in. Otherwise admin controls.
-        if (state.adminIsActive() == false) {
+        if (state.isAdminActive() == false) {
             new Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
@@ -198,13 +198,9 @@ public class GameService {
     private void tallyPoints() {
         choiceGame.getAnswers().values().stream()
             .filter(answer -> answer.isCorrect())
-            .forEach(answer -> {
-                state.getRegisteredPlayers().stream()
-                    .filter(player -> player.getId().equals(answer.getId()))
-                    .forEach(player -> {
-                        player.setScore(player.getScore() + answer.getPoints());
-                    });
-            });
+            .forEach(answer ->
+                state.incrementPlayerScore(answer.getId(), answer.getPoints())
+            );
     }
 
     private void killGame() {
@@ -213,7 +209,6 @@ public class GameService {
             choiceGame = null;
             choiceGameReference.gameOver();
             state.setScreen(GlobalState.Screen.Welcome);
-            publish();
         }
     }
 
@@ -222,11 +217,11 @@ public class GameService {
         Collection<String> playersThatAnswered = answers.stream()
             .map(a -> a.getId())
             .collect(Collectors.toList());
-
-        Collection<PlayerAnswer> nonAnswers = state.getRegisteredPlayers().stream()
-            .filter(p -> !playersThatAnswered.contains(p.getId()))
+                 
+        Collection<PlayerAnswer> nonAnswers = state.getPlayerIds().stream()
+            .filter(p -> !playersThatAnswered.contains(p))
             .map(p -> new PlayerAnswer() {{
-                setId(p.getId());
+                setId(p);
                 setPoints(0);
                 setCorrect(false);
             }}).collect(Collectors.toList());
@@ -243,15 +238,5 @@ public class GameService {
 
     private PlayerHelper getPlayerHelper(String sessionId) {
         return new PlayerHelper(sessionId, getState());
-    }
-
-    private void publish() {
-        getState().getRegisteredPlayers()
-            .stream().map(p -> p.getSessionId())
-            .forEach(playerSessionId -> publisher.publishEvent(playerSessionId));
-
-        if (state.getAdminSessionId() != null) {
-            publisher.publishEvent(state.getAdminSessionId());
-        }
     }
 }

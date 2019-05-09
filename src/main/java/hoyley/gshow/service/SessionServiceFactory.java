@@ -2,6 +2,7 @@ package hoyley.gshow.service;
 
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.state.GlobalState;
+import hoyley.gshow.model.state.StateFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,7 +25,10 @@ public class SessionServiceFactory {
     }
 
     public SessionService create(String sessionKey) {
-        GameService gameService = gameServiceFactory.create(new GlobalState());
-        return new SessionService(sessionKey, adminKey, gameService, applicationEventPublisher);
+        StateFacade state = new StateFacade(new GlobalState(), (playerSessionKey) ->
+            applicationEventPublisher.publishEvent(playerSessionKey)
+        );
+        GameService gameService = gameServiceFactory.create(state);
+        return new SessionService(sessionKey, state, adminKey, gameService);
     }
 }
