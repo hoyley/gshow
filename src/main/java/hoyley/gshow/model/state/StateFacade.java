@@ -3,16 +3,19 @@ package hoyley.gshow.model.state;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.Player;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StateFacade {
 
-    private final GlobalState state;
     private final Consumer<String> stateUpdated;
+    private GlobalState state;
     private boolean delayUpdate = false;
 
     public StateFacade(GlobalState state, Consumer<String> stateUpdated) {
@@ -20,73 +23,82 @@ public class StateFacade {
         this.stateUpdated = stateUpdated;
     }
 
-    public void setChoiceGameState(ChoiceGameState choiceGameState) {
-        state.setChoiceGameState(choiceGameState);
-    }
-
-    public void setScreen(GlobalState.Screen screen) {
-        state.setScreen(screen);
-    }
-
-    public boolean isAdminActive() {
-        return state.adminIsActive();
-    }
-
-    public List<String> getPlayerIds() {
-        return state.getRegisteredPlayers().stream()
-            .map(p -> p.getId())
-            .collect(Collectors.toList());
-    }
-
-    public List<String> getPlayerSessionIds() {
-        return state.getRegisteredPlayers().stream()
-            .map(p -> p.getSessionId())
-            .collect(Collectors.toList());
-    }
-
-    public void incrementPlayerScore(String playerId, int points) {
-        state.getRegisteredPlayers().stream()
-            .filter(player -> player.getId().equals(playerId))
-            .forEach(player -> {
-                player.setScore(player.getScore() + points);
-            });
+    public synchronized void setChoiceGameState(ChoiceGameState choiceGameState) {
+        synchronized (this) {
+            state = state.withChoiceGameState(choiceGameState);
+        }
 
         publish();
     }
 
-    public String getAdminSessionId() {
-        return state.getAdminSessionId();
+    public void setScreen(GlobalState.Screen screen) {
+        synchronized (this) {
+            state = state.withScreen(screen);
+        }
+
+        publish();
     }
 
-    public void setAdminSessionId(String id) {
-        state.setAdminSessionId(id);
+    public void incrementPlayerScore(String playerId, int points) {
+        synchronized (this) {
+            state = state.withRegisteredPlayers(
+                state.getRegisteredPlayers().stream()
+                    .filter(player -> Objects.equals(player.getId(), playerId))
+                    .map(player -> player.withScore(player.getScore() + points))
+                    .collect(Collectors.toList())
+            );
+        }
+        
+        publish();
+    }
+
+    public synchronized void setAdminSessionId(String id) {
+        synchronized (this) {
+            state = state.withAdminSessionId(id);
+        }
+
         publish();
     }
 
     public boolean addPlayer(Player player) {
-        // If player does not already exist with the given session ID, add the player. We don't want
-        // the player to add themselves twice
-        if (state.getRegisteredPlayers().stream()
-            .anyMatch(p -> p.getSessionId().equals(player.getSessionId())) == false) {
-            state.getRegisteredPlayers().add(player);
+        boolean publish = false;
 
-            publish();
-            return true;
-        } else {
-            return false;
+        synchronized (this) {
+            // If player does not already exist with the given session ID, add the player. We don't want
+            // the player to add themselves twice
+            if (state.getRegisteredPlayers().stream()
+                .anyMatch(p -> p.getSessionId().equals(player.getSessionId())) == false) {
+
+                state.withRegisteredPlayers(
+                    Stream.concat(state.getRegisteredPlayers().stream(), Stream.of(player))
+                        .collect(Collectors.toList())
+                );
+
+                publish = true;
+            }
         }
+
+        if (publish) {
+            publish();
+        }
+        return publish;
     }
 
     public boolean removePlayerBySessionId(String sessionId) {
-        boolean removed = state.getRegisteredPlayers().removeIf(p -> Objects.equals(sessionId, p.getSessionId()));
-
-        if (removed) {
-            publish();
-        }
-        return removed;
+        return removePlayer(p -> Objects.equals(p.getSessionId(), sessionId));
     }
-    public boolean removePlayerById(String id) {
-        boolean removed = state.getRegisteredPlayers().removeIf(p -> Objects.equals(id, p.getId()));
+
+    public boolean removePlayer(Predicate<Player> playerMatch) {
+        boolean removed = false;
+
+        synchronized (this) {
+            if (state.getRegisteredPlayers().stream().filter(playerMatch).findFirst().isPresent()) {
+                List<Player> newRegisteredPlayers = new LinkedList<>(state.getRegisteredPlayers());
+                newRegisteredPlayers.removeIf(playerMatch);
+                state.withRegisteredPlayers(newRegisteredPlayers);
+                removed = true;
+            }
+        }
 
         if (removed) {
             publish();
@@ -114,6 +126,26 @@ public class StateFacade {
             setMyPlayer(myPlayer.orElseGet(() -> null));
             setGlobalState(state);
         }};
+    }
+
+    public String getAdminSessionId() {
+        return state.getAdminSessionId();
+    }
+
+    public boolean isAdminActive() {
+        return state.adminIsActive();
+    }
+
+    public List<String> getPlayerIds() {
+        return state.getRegisteredPlayers().stream()
+            .map(p -> p.getId())
+            .collect(Collectors.toList());
+    }
+
+    public List<String> getPlayerSessionIds() {
+        return state.getRegisteredPlayers().stream()
+            .map(p -> p.getSessionId())
+            .collect(Collectors.toList());
     }
 
     public void publish() {

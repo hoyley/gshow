@@ -6,6 +6,7 @@ import hoyley.gshow.games.TimedGameConfig;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.Player;
 import hoyley.gshow.model.choiceGame.ChoiceQuestion;
+import hoyley.gshow.model.choiceGame.GameStatus;
 import hoyley.gshow.model.choiceGame.PlayerAnswer;
 import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.model.state.ChoiceGameState;
@@ -150,35 +151,35 @@ public class GameService {
     private void onGameStateChange() {
         if (choiceGame == null) return;
 
-        ChoiceGameState screen = new ChoiceGameState();
-        screen.setQuestion(choiceGame.getQuestion().getQuestion());
-        screen.setImagePath(choiceGame.getQuestion().getImagePath());
-        screen.setOptions(choiceGame.getQuestion().getOptions());
-        screen.setCurrentQuestion(questionList.getCurrentQuestionIndex());
-        screen.setTotalQuestions(questionList.getTotalQuestions());
-        screen.getStatus().setRemainingPoints(choiceGame.getCurrentPoints());
-        screen.getStatus().setRemainingTime(choiceGame.getSecondsRemaining());
-        screen.getStatus().setGameOver(choiceGame.isGameOver());
+        ChoiceGameState state = ChoiceGameState.builder().
+            question(choiceGame.getQuestion().getQuestion())
+            .imagePath(choiceGame.getQuestion().getImagePath())
+            .options(choiceGame.getQuestion().getOptions())
+            .currentQuestion(questionList.getCurrentQuestionIndex())
+            .totalQuestions(questionList.getTotalQuestions())
+            .status(GameStatus.builder()
+                .remainingPoints(choiceGame.getCurrentPoints())
+                .remainingTime(choiceGame.getSecondsRemaining())
+                .isGameOver(choiceGame.isGameOver())
+                .build())
+            .playerAnswers(getPlayerAnswers())
+            .answer(choiceGame.isGameOver() ? null : choiceGame.getQuestion().getAnswer())
+            .build();
 
-        if (choiceGame.isGameOver()) {
-            initiateGameComplete(screen);
-        } else {
-            screen.setPlayerAnswers(choiceGame.getAnswers().values().stream()
-                .map(p -> p.cloneSecret())
-                .collect(Collectors.toList()));
-        }
-
-        state.batch(s -> {
-            s.setChoiceGameState(screen);
+        this.state.batch(s -> {
+            s.setChoiceGameState(state);
             s.setScreen(GlobalState.Screen.ChoiceGame);
         });
+        
+        if (choiceGame.isGameOver()) {
+            tallyPoints();
+            endGameConditionally();
+        }
     }
 
     private void initiateGameComplete(ChoiceGameState screen) {
-        screen.setAnswer(choiceGame.getQuestion().getAnswer());
-        screen.setPlayerAnswers(getPlayerAnswers());
-        tallyPoints();
-        endGameConditionally();
+
+
     }
 
     private void endGameConditionally() {
@@ -213,11 +214,18 @@ public class GameService {
     }
 
     private Collection<PlayerAnswer> getPlayerAnswers() {
+
+        if (choiceGame.isGameOver()) {
+            return choiceGame.getAnswers().values().stream()
+                .map(p -> p.cloneSecret())
+                .collect(Collectors.toList());
+        }
+
         Collection<PlayerAnswer> answers = choiceGame.getAnswers().values().stream().collect(Collectors.toList());
         Collection<String> playersThatAnswered = answers.stream()
             .map(a -> a.getId())
             .collect(Collectors.toList());
-                 
+
         Collection<PlayerAnswer> nonAnswers = state.getPlayerIds().stream()
             .filter(p -> !playersThatAnswered.contains(p))
             .map(p -> new PlayerAnswer() {{

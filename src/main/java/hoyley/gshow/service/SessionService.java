@@ -50,11 +50,11 @@ public class SessionService {
     }
 
     public Player registerPlayer(String playerName, String playerSessionId) {
-        Player player = new Player() {{
-            setSessionId(playerSessionId);
-            setNickname(playerName);
-            setId(UUID.randomUUID().toString());
-        }};
+        Player player = Player.builder()
+            .id(UUID.randomUUID().toString())
+            .nickname(playerName)
+            .sessionId(playerSessionId)
+            .build();
 
         if (state.addPlayer(player)) {
             return player;
