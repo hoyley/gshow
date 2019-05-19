@@ -1,5 +1,6 @@
 package hoyley.gshow.controllers;
 
+import hoyley.gshow.Constants;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.service.GameService;
 import hoyley.gshow.service.SessionManagementService;
@@ -43,7 +44,7 @@ public class ChoiceGameController {
     }
 
     private GameService gameService() {
-        return sessionService.getSessionSafe("main").getGame();
+        return sessionService.getSessionSafe(Constants.DEFAULT_SESSION).getGame();
     }
 
     private PlayerHelper getPlayerHelper() {

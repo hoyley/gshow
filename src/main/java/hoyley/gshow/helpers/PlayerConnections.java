@@ -29,7 +29,7 @@ public class PlayerConnections {
             removeConnection(playerSessionId, instanceKey, emitter, "Timeout"));
 
         if (playerInstances.putIfAbsent(instanceKey, emitter) != null) {
-            throw new RuntimeException(String.format("Player session [{]] already has an instance with key [{}].",
+            throw new RuntimeException(String.format("Player session [{}] already has an instance with key [{}].",
                 playerSessionId, instanceKey));
         }
         logger.info("Registered player [{}:{}].", playerSessionId, instanceKey);

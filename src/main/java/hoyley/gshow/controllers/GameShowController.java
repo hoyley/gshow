@@ -1,6 +1,7 @@
 package hoyley.gshow.controllers;
 
-import hoyley.gshow.Configurator;
+import hoyley.gshow.Constants;
+import hoyley.gshow.QuestionLoader;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.state.SessionState;
 import hoyley.gshow.service.SessionManagementService;
@@ -14,17 +15,17 @@ public class GameShowController {
 
     private final SessionManagementService sessionService;
 
-    public GameShowController(SessionManagementService sessionService, Configurator configurator) {
+    public GameShowController(SessionManagementService sessionService, QuestionLoader questionLoader) {
         this.sessionService = sessionService;
 
-        configurator.configure();
+        questionLoader.configure();
     }
 
     @RequestMapping("/state")
     public SessionState state(HttpServletRequest request) {
         PlayerHelper playerHelper = new PlayerHelper(request.getSession().getId(),
-            sessionService.getSessionSafe("main").getGame().getState());
+            sessionService.getSessionSafe(Constants.DEFAULT_SESSION).getGame().getState());
         
-        return sessionService.getSessionSafe("main").sessionState(playerHelper);
+        return sessionService.getSessionSafe(Constants.DEFAULT_SESSION).getState().getSessionState(playerHelper);
     }
 }

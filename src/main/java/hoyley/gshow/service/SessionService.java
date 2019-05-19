@@ -1,10 +1,9 @@
 package hoyley.gshow.service;
 
+import hoyley.gshow.helpers.PlayerConnections;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.Player;
-import hoyley.gshow.model.state.GlobalState;
-import hoyley.gshow.model.state.SessionState;
-import org.springframework.context.ApplicationEventPublisher;
+import hoyley.gshow.model.state.StateFacade;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -12,36 +11,40 @@ import java.util.UUID;
 public class SessionService {
 
     private final String sessionKey;
-    private final ApplicationEventPublisher publisher;
     private final String adminSecretKey;
     private final GameService gameService;
+    private final StateFacade state;
+    private final PlayerConnections playerConnections = new PlayerConnections();
 
     public SessionService(String sessionKey,
+                          StateFacade state,
                           String adminKey,
-                          GameService gameService,
-                          ApplicationEventPublisher publisher) {
+                          GameService gameService) {
         this.sessionKey = sessionKey;
-        this.publisher = publisher;
         this.adminSecretKey = adminKey;
         this.gameService = gameService;
+        this.state = state;
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
     }
 
     public GameService getGame() {
         return gameService;
     }
 
-    public SessionState sessionState(PlayerHelper helper) {
-        return new SessionState() {{
-            setAdmin(helper.isAdmin());
-            setMyPlayer(helper.getPlayer());
-            setGlobalState(gameState());
-        }};
+    public StateFacade getState() {
+        return state;
+    }
+
+    public PlayerConnections getPlayerConnections() {
+        return playerConnections;
     }
 
     public boolean registerAdmin(String adminSecretKey, String adminSessionId) {
         if (Objects.equals(adminSecretKey, this.adminSecretKey)) {
-            gameState().setAdminSessionId(adminSessionId);
-            publish();
+            state.setAdminSessionId(adminSessionId);
             return true;
         }
 
@@ -49,50 +52,24 @@ public class SessionService {
     }
 
     public void logout(PlayerHelper playerHelper) {
-        boolean publish = false;
-
         if (playerHelper.isAdmin()) {
-            gameState().setAdminSessionId(null);
-            publish = true;
+            state.setAdminSessionId(null);
         }
 
-        if (playerHelper.getPlayer() != null) {
-            gameState().getRegisteredPlayers().remove(playerHelper.getPlayer());
-            publish = true;
-        }
-
-        if (publish) {
-            publish();
-        }
+        state.removePlayerBySessionId(playerHelper.getPlayerSessionId());
     }
 
     public Player registerPlayer(String playerName, String playerSessionId) {
-        Player player = new Player() {{
-            setSessionId(playerSessionId);
-            setNickname(playerName);
-            setId(UUID.randomUUID().toString());
-        }};
+        Player player = Player.builder()
+            .id(UUID.randomUUID().toString())
+            .nickname(playerName)
+            .sessionId(playerSessionId)
+            .build();
 
-        // If player does not already exist with the given session ID, add the player. We don't want
-        // the player to add themselves twice
-        if (gameState().getRegisteredPlayers().stream()
-                .anyMatch(p -> p.getSessionId().equals(playerSessionId)) == false) {
-            gameState().getRegisteredPlayers().add(player);
-            publish();
-
+        if (state.addPlayer(player)) {
             return player;
         } else {
             return null;
         }
-    }
-
-    private GlobalState gameState() {
-        return gameService.getState();
-    }
-
-    private void publish() {
-        gameState().getRegisteredPlayers().stream()
-            .map(p -> p.getSessionId())
-            .forEach(sid -> publisher.publishEvent(sid));
     }
 }

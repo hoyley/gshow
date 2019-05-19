@@ -6,6 +6,8 @@ import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.serializers.ChoiceQuestionDeserializer;
 import hoyley.gshow.serializers.NativeChoiceQuestionDeserializer;
 import hoyley.gshow.serializers.OpenTriviaDbDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -16,12 +18,14 @@ import java.io.InputStream;
 import java.util.List;
 
 @Component
-public class Configurator {
+public class QuestionLoader {
 
     public enum QuestionSourceFormat {
         OpenTDB,
         Native
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(QuestionLoader.class);
 
     @Autowired
     private QuestionList questionList;
@@ -40,7 +44,6 @@ public class Configurator {
 
     private ChoiceQuestionDeserializer deserializer;
 
-
     public void configure() {
 
         switch (questionSourceFormat) {
@@ -51,22 +54,12 @@ public class Configurator {
                 deserializer = new NativeChoiceQuestionDeserializer();
                 break;
             default:
-                throw new RuntimeException(String.format("Unrecognized 'game.questionSource.format' [%s].",
+                logger.info(String.format("Unrecognized 'game.questionSource.format' [%s]. Falling back to default.",
                     questionSourceFormat));
+                deserializer = new NativeChoiceQuestionDeserializer();
         }
 
         loadQuestions();
-    }
-
-    public List<ChoiceQuestion> loadInternalResource() {
-        InputStream stream;
-
-        try {
-            stream = questionSourceFile.getInputStream();
-        } catch (IOException ex) {
-            throw new RuntimeException(String.format("Could not load InputStream."));
-        }
-        return deserializer.deserialize(stream);
     }
 
     private void loadQuestions() {
@@ -76,5 +69,16 @@ public class Configurator {
         }
         QuestionHelper.processOptions(questions, maxOptions);
         questions.forEach(q -> questionList.addChoiceQuestion(q));
+    }
+
+    private List<ChoiceQuestion> loadInternalResource() {
+        InputStream stream;
+
+        try {
+            stream = questionSourceFile.getInputStream();
+        } catch (IOException ex) {
+            throw new RuntimeException(String.format("Could not load InputStream."));
+        }
+        return deserializer.deserialize(stream);
     }
 }

@@ -3,12 +3,16 @@ package hoyley.gshow.model.state;
 import hoyley.gshow.model.choiceGame.ChoiceOption;
 import hoyley.gshow.model.choiceGame.GameStatus;
 import hoyley.gshow.model.choiceGame.PlayerAnswer;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.experimental.Wither;
 
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Builder(toBuilder = true)
+@Getter
+@Wither
 public class ChoiceGameState {
 
     private String question;
@@ -19,9 +23,4 @@ public class ChoiceGameState {
     private GameStatus status;
     private int currentQuestion;
     private int totalQuestions;
-    
-    public ChoiceGameState() {
-        status = new GameStatus();
-    }
-
 }

@@ -1,14 +1,19 @@
 package hoyley.gshow.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.Wither;
 
-@Data
+@Builder(toBuilder = true)
+@Getter
+@Wither
 public class Player {
 
-    private String id;
-    private String nickname;
+    @NonNull private String id;
+    @NonNull private String nickname;
     private int score;
+
     @JsonIgnore
+    @NonNull
     private String sessionId;
 }

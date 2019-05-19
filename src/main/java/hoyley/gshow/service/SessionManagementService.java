@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 @Component
 public class SessionManagementService {
@@ -42,5 +43,9 @@ public class SessionManagementService {
         }
 
         return newService;
+    }
+
+    public void forEach(Consumer<SessionService> callable) {
+        sessionMap.values().forEach(callable);
     }
 }

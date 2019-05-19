@@ -2,6 +2,7 @@ package hoyley.gshow.service;
 
 import hoyley.gshow.model.choiceGame.QuestionList;
 import hoyley.gshow.model.state.GlobalState;
+import hoyley.gshow.model.state.StateFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,7 +26,7 @@ public class GameServiceFactory {
         this.publisher = publisher;
     }
 
-    public GameService create(GlobalState state) {
+    public GameService create(StateFacade state) {
         return new GameService(state, questionList, publisher, gameOverDelayMillis, guessTimeSecs);
     }
 }
