@@ -1,5 +1,6 @@
 package hoyley.gshow.controllers;
 
+import hoyley.gshow.Constants;
 import hoyley.gshow.QuestionLoader;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.state.SessionState;
@@ -23,8 +24,8 @@ public class GameShowController {
     @RequestMapping("/state")
     public SessionState state(HttpServletRequest request) {
         PlayerHelper playerHelper = new PlayerHelper(request.getSession().getId(),
-            sessionService.getSessionSafe("main").getGame().getState());
+            sessionService.getSessionSafe(Constants.DEFAULT_SESSION).getGame().getState());
         
-        return sessionService.getSessionSafe("main").getState().getSessionState(playerHelper);
+        return sessionService.getSessionSafe(Constants.DEFAULT_SESSION).getState().getSessionState(playerHelper);
     }
 }

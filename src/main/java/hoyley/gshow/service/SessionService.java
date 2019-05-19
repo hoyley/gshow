@@ -1,5 +1,6 @@
 package hoyley.gshow.service;
 
+import hoyley.gshow.helpers.PlayerConnections;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.model.Player;
 import hoyley.gshow.model.state.StateFacade;
@@ -13,6 +14,7 @@ public class SessionService {
     private final String adminSecretKey;
     private final GameService gameService;
     private final StateFacade state;
+    private final PlayerConnections playerConnections = new PlayerConnections();
 
     public SessionService(String sessionKey,
                           StateFacade state,
@@ -24,12 +26,20 @@ public class SessionService {
         this.state = state;
     }
 
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
     public GameService getGame() {
         return gameService;
     }
 
     public StateFacade getState() {
         return state;
+    }
+
+    public PlayerConnections getPlayerConnections() {
+        return playerConnections;
     }
 
     public boolean registerAdmin(String adminSecretKey, String adminSessionId) {

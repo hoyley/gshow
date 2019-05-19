@@ -2,6 +2,7 @@ package hoyley.gshow.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hoyley.gshow.Constants;
 import hoyley.gshow.helpers.PlayerConnections;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.service.SessionManagementService;
@@ -33,8 +34,6 @@ public class EventController {
     private SessionManagementService sessionManagementService;
     @Autowired
     private ObjectMapper mapper;
-    @Autowired
-    private PlayerConnections connections;
     @Value("${game.events.reconnectTimeMillis}")
     private int reconnectTimeMillis = 5000;
     @Value("${game.events.keepAliveTimeMillis}")
@@ -51,7 +50,6 @@ public class EventController {
         }, 5000, 5000);
     }
 
-
     @EventListener
     public void updateSession(String sessionId) {
         publishState(sessionId);
@@ -63,33 +61,57 @@ public class EventController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "'instanceKey' is required.");
         }
 
-        String sessionId = request.getSession().getId();
+        String playerSessionId = request.getSession().getId();
 
-        SseEmitter emitter = connections.registerPlayer(sessionId, instanceKey);
-        publishState(sessionId);
+        SseEmitter emitter = getConnections(Constants.DEFAULT_SESSION).registerPlayer(playerSessionId, instanceKey);
+        publishPlayerState(Constants.DEFAULT_SESSION, playerSessionId);
 
         return emitter;
     }
 
-    private void publishState(String playerSessionId) {
-        connections.forEach(playerSessionId, (sessionId, instanceKey, emitter) -> {
-            try {
-                emitter.send(SseEmitter.event()
-                    .data(getState(playerSessionId))
-                    .id(UUID.randomUUID().toString())
-                    .name("state")
-                    .reconnectTime(reconnectTimeMillis)
-                );
-                logger.info("Published current state to player [{}:{}].", playerSessionId, instanceKey);
-            } catch (IOException ex) {
-                logger.trace(String.format("Error sending event to player [%s:%s].", playerSessionId,
-                    instanceKey), ex);
-                connections.removeConnection(playerSessionId, instanceKey, emitter, "Error " + ex.getClass());
-            }
-        });
+    private void publishState(String sessionId) {
+        PlayerConnections connections = getConnections(sessionId);
+        connections.forEach((playerSessionId, instanceKey, emitter) ->
+            publishState(connections, playerSessionId, instanceKey, emitter)
+        );
+    }
+
+    private void publishPlayerState(String sessionId, String playerSessionId) {
+        PlayerConnections connections = getConnections(sessionId);
+        connections.forEach(playerSessionId, (psid, instanceKey, emitter) ->
+            publishState(connections, playerSessionId, instanceKey, emitter)
+        );
+    }
+
+    private void publishState(PlayerConnections connections, String playerSessionId, String instanceKey,
+                              SseEmitter emitter) {
+        try {
+            emitter.send(SseEmitter.event()
+                .data(getState(playerSessionId))
+                .id(UUID.randomUUID().toString())
+                .name("state")
+                .reconnectTime(reconnectTimeMillis)
+            );
+            logger.info("Published current state to player [{}:{}].", playerSessionId, instanceKey);
+        } catch (IOException ex) {
+            logger.trace(String.format("IOException when sending event to player [%s:%s].", playerSessionId,
+                instanceKey), ex);
+            connections.removeConnection(playerSessionId, instanceKey, emitter, "Error " + ex.getClass());
+        } catch (Exception ex) {
+            logger.error(String.format("Error sending event to player [%s:%s].", playerSessionId,
+                instanceKey), ex);
+            connections.removeConnection(playerSessionId, instanceKey, emitter, "Error " + ex.getClass());
+        }
     }
 
     private void keepAlive() {
+        sessionManagementService.forEach(sessionService -> {
+            keepAlive(sessionService.getSessionKey());
+        });
+    }
+
+    private void keepAlive(String sessionId) {
+        PlayerConnections connections = getConnections(sessionId);
         connections.forEach((sessionKey, instanceKey, emitter) -> {
             try {
                 emitter.send(SseEmitter.event()
@@ -106,7 +128,7 @@ public class EventController {
 
     private String getState(String playerSessionId) {
         try {
-            SessionService sessionService = sessionManagementService.getSessionSafe("main");
+            SessionService sessionService = sessionManagementService.getSessionSafe(Constants.DEFAULT_SESSION);
             PlayerHelper helper = getPlayerHelper(playerSessionId);
             return mapper.writeValueAsString(sessionService.getState().getSessionState(helper));
         } catch (JsonProcessingException ex) {
@@ -116,6 +138,10 @@ public class EventController {
 
     private PlayerHelper getPlayerHelper(String playerSessionId) {
         return new PlayerHelper(playerSessionId,
-            sessionManagementService.getSessionSafe("main").getGame().getState());
+            sessionManagementService.getSessionSafe(Constants.DEFAULT_SESSION).getGame().getState());
+    }
+
+    private PlayerConnections getConnections(String sessionId) {
+        return sessionManagementService.getSessionSafe(sessionId).getPlayerConnections();
     }
 }

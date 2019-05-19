@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 
 public class StateFacade {
 
-    private final Consumer<String> stateUpdated;
+    private final Runnable stateUpdated;
     private GlobalState state;
     private boolean delayUpdate = false;
 
-    public StateFacade(GlobalState state, Consumer<String> stateUpdated) {
+    public StateFacade(GlobalState state, Runnable stateUpdated) {
         this.state = state;
         this.stateUpdated = stateUpdated;
     }
@@ -43,8 +43,9 @@ public class StateFacade {
         synchronized (this) {
             state = state.withRegisteredPlayers(
                 state.getRegisteredPlayers().stream()
-                    .filter(player -> Objects.equals(player.getId(), playerId))
-                    .map(player -> player.withScore(player.getScore() + points))
+                    .map(player -> Objects.equals(player.getSessionId(), playerId)
+                            ? player.withScore(player.getScore() + points)
+                            : player)
                     .collect(Collectors.toList())
             );
         }
@@ -69,7 +70,7 @@ public class StateFacade {
             if (state.getRegisteredPlayers().stream()
                 .anyMatch(p -> p.getSessionId().equals(player.getSessionId())) == false) {
 
-                state.withRegisteredPlayers(
+                state = state.withRegisteredPlayers(
                     Stream.concat(state.getRegisteredPlayers().stream(), Stream.of(player))
                         .collect(Collectors.toList())
                 );
@@ -150,13 +151,7 @@ public class StateFacade {
 
     public void publish() {
         if (delayUpdate == false && stateUpdated != null) {
-            getPlayerSessionIds().forEach(id -> {
-                stateUpdated.accept(id);
-            });
-
-            if (getAdminSessionId() != null) {
-                stateUpdated.accept(getAdminSessionId());
-            }
+            stateUpdated.run();
         }
     }
 }

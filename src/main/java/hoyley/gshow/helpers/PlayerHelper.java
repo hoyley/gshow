@@ -34,7 +34,7 @@ public class PlayerHelper {
         if (state.isAdminActive()) {
             return isAdmin();
         } else {
-            return true;
+            return getPlayer() != null;
         }
     }
 

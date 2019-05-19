@@ -197,11 +197,13 @@ public class GameService {
     }
 
     private void tallyPoints() {
-        choiceGame.getAnswers().values().stream()
-            .filter(answer -> answer.isCorrect())
-            .forEach(answer ->
-                state.incrementPlayerScore(answer.getId(), answer.getPoints())
-            );
+        state.batch(s -> {
+            choiceGame.getAnswers().values().stream()
+                .filter(answer -> answer.isCorrect())
+                .forEach(answer ->
+                    s.incrementPlayerScore(answer.getId(), answer.getPoints())
+                );
+        });
     }
 
     private void killGame() {
@@ -215,7 +217,7 @@ public class GameService {
 
     private Collection<PlayerAnswer> getPlayerAnswers() {
 
-        if (choiceGame.isGameOver()) {
+        if (choiceGame.isGameOver() == false) {
             return choiceGame.getAnswers().values().stream()
                 .map(p -> p.cloneSecret())
                 .collect(Collectors.toList());

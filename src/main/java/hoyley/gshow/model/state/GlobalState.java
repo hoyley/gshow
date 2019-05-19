@@ -27,8 +27,14 @@ public class GlobalState {
     @NonNull private ChoiceGameState choiceGameState;
     @NonNull private Screen screen;
 
-    @JsonIgnore @NonNull private String adminSessionId;
+    @JsonIgnore private String adminSessionId;
 
+    public static GlobalState empty() {
+        return GlobalState.builder()
+            .choiceGameState(ChoiceGameState.builder().build())
+            .screen(Screen.Welcome)
+            .build();
+    }
     public void setAdminSessionId(String adminSessionId) {
         this.adminSessionId = adminSessionId;
     }

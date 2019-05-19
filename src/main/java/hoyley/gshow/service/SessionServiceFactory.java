@@ -25,8 +25,8 @@ public class SessionServiceFactory {
     }
 
     public SessionService create(String sessionKey) {
-        StateFacade state = new StateFacade(GlobalState.builder().build(), (playerSessionKey) ->
-            applicationEventPublisher.publishEvent(playerSessionKey)
+        StateFacade state = new StateFacade(GlobalState.empty(), () ->
+            applicationEventPublisher.publishEvent(sessionKey)
         );
         GameService gameService = gameServiceFactory.create(state);
         return new SessionService(sessionKey, state, adminKey, gameService);
