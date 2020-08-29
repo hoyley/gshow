@@ -3,7 +3,7 @@ package hoyley.gshow.controllers;
 import hoyley.gshow.Constants;
 import hoyley.gshow.helpers.PlayerHelper;
 import hoyley.gshow.service.GameService;
-import hoyley.gshow.service.SessionManagementService;
+import hoyley.gshow.service.GameRoomManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ChoiceGameController {
 
     @Autowired
-    private SessionManagementService sessionService;
+    private GameRoomManagementService gameRoomManagementService;
     @Autowired
     private HttpServletRequest servletRequest;
 
@@ -44,7 +44,7 @@ public class ChoiceGameController {
     }
 
     private GameService gameService() {
-        return sessionService.getSessionSafe(Constants.DEFAULT_SESSION).getGame();
+        return gameRoomManagementService.getGameRoom(Constants.DEFAULT_GAME_ROOM).getGame();
     }
 
     private PlayerHelper getPlayerHelper() {

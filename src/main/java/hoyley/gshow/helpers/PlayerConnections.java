@@ -12,7 +12,7 @@ public class PlayerConnections {
 
     private static final Logger logger = LoggerFactory.getLogger(PlayerConnections.class);
     
-    // PlayerSessionId -> [ PlayerUniqueString -> SseEmitter ]
+    // PlayerSessionId -> [ PlayerInstanceKey -> SseEmitter ]
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, SseEmitter>> playerConnections = new ConcurrentHashMap<>();
 
     public SseEmitter registerPlayer(String playerSessionId, String instanceKey) {

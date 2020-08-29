@@ -5,14 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hoyley.gshow.Constants;
 import hoyley.gshow.helpers.PlayerConnections;
 import hoyley.gshow.helpers.PlayerHelper;
-import hoyley.gshow.service.SessionManagementService;
-import hoyley.gshow.service.SessionService;
+import hoyley.gshow.service.GameRoomManagementService;
+import hoyley.gshow.service.GameRoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,11 +32,11 @@ public class EventController {
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     @Autowired
-    private SessionManagementService sessionManagementService;
+    private GameRoomManagementService gameRoomManagementService;
     @Autowired
     private ObjectMapper mapper;
     @Value("${game.events.reconnectTimeMillis}")
-    private int reconnectTimeMillis = 5000;
+    private int reconnectTimeMillis = 2000;
     @Value("${game.events.keepAliveTimeMillis}")
     private int keepAliveTimeMillis = 5000;
 
@@ -47,15 +48,15 @@ public class EventController {
             public void run() {
                 keepAlive();
             }
-        }, 5000, 5000);
+        }, keepAliveTimeMillis, keepAliveTimeMillis);
     }
 
     @EventListener
-    public void updateSession(String sessionId) {
-        publishState(sessionId);
+    public void updateGameRoom(String gameRoomId) {
+        publishState(gameRoomId);
     }
 
-    @GetMapping(path = "register", produces = "text/event-stream")
+    @GetMapping(path = "register", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter register(@RequestParam String instanceKey, HttpServletRequest request) {
         if (instanceKey == null || instanceKey.trim().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "'instanceKey' is required.");
@@ -63,21 +64,21 @@ public class EventController {
 
         String playerSessionId = request.getSession().getId();
 
-        SseEmitter emitter = getConnections(Constants.DEFAULT_SESSION).registerPlayer(playerSessionId, instanceKey);
-        publishPlayerState(Constants.DEFAULT_SESSION, playerSessionId);
+        SseEmitter emitter = getPlayerConnections(Constants.DEFAULT_GAME_ROOM).registerPlayer(playerSessionId, instanceKey);
+        publishPlayerState(Constants.DEFAULT_GAME_ROOM, playerSessionId);
 
         return emitter;
     }
 
-    private void publishState(String sessionId) {
-        PlayerConnections connections = getConnections(sessionId);
+    private void publishState(String gameRoomId) {
+        PlayerConnections connections = getPlayerConnections(gameRoomId);
         connections.forEach((playerSessionId, instanceKey, emitter) ->
             publishState(connections, playerSessionId, instanceKey, emitter)
         );
     }
 
-    private void publishPlayerState(String sessionId, String playerSessionId) {
-        PlayerConnections connections = getConnections(sessionId);
+    private void publishPlayerState(String gameRoomId, String playerSessionId) {
+        PlayerConnections connections = getPlayerConnections(gameRoomId);
         connections.forEach(playerSessionId, (psid, instanceKey, emitter) ->
             publishState(connections, playerSessionId, instanceKey, emitter)
         );
@@ -92,7 +93,7 @@ public class EventController {
                 .name("state")
                 .reconnectTime(reconnectTimeMillis)
             );
-            logger.info("Published current state to player [{}:{}].", playerSessionId, instanceKey);
+            logger.debug("Published current state to player [{}:{}].", playerSessionId, instanceKey);
         } catch (IOException ex) {
             logger.trace(String.format("IOException when sending event to player [%s:%s].", playerSessionId,
                 instanceKey), ex);
@@ -105,13 +106,13 @@ public class EventController {
     }
 
     private void keepAlive() {
-        sessionManagementService.forEach(sessionService -> {
-            keepAlive(sessionService.getSessionKey());
+        gameRoomManagementService.forEach(gameRoomService -> {
+            keepAlive(gameRoomService.getGameRoomKey());
         });
     }
 
-    private void keepAlive(String sessionId) {
-        PlayerConnections connections = getConnections(sessionId);
+    private void keepAlive(String gameRoomId) {
+        PlayerConnections connections = getPlayerConnections(gameRoomId);
         connections.forEach((sessionKey, instanceKey, emitter) -> {
             try {
                 emitter.send(SseEmitter.event()
@@ -119,7 +120,7 @@ public class EventController {
                     .reconnectTime(reconnectTimeMillis)
                     .build());
             } catch (Exception ex) {
-                logger.trace(String.format("Error sending keepalive event player [{}:{}]", sessionKey, instanceKey),
+                logger.trace(String.format("Error sending keepalive event player [%s:%s]", sessionKey, instanceKey),
                     ex);
                 connections.removeConnection(sessionKey, instanceKey, emitter, "Error " + ex.getClass());
             }
@@ -128,9 +129,9 @@ public class EventController {
 
     private String getState(String playerSessionId) {
         try {
-            SessionService sessionService = sessionManagementService.getSessionSafe(Constants.DEFAULT_SESSION);
+            GameRoomService gameRoomService = gameRoomManagementService.getGameRoom(Constants.DEFAULT_GAME_ROOM);
             PlayerHelper helper = getPlayerHelper(playerSessionId);
-            return mapper.writeValueAsString(sessionService.getState().getSessionState(helper));
+            return mapper.writeValueAsString(gameRoomService.getState().getSessionState(helper));
         } catch (JsonProcessingException ex) {
             throw new RuntimeException("Error writing state to string.", ex);
         }
@@ -138,10 +139,10 @@ public class EventController {
 
     private PlayerHelper getPlayerHelper(String playerSessionId) {
         return new PlayerHelper(playerSessionId,
-            sessionManagementService.getSessionSafe(Constants.DEFAULT_SESSION).getGame().getState());
+            gameRoomManagementService.getGameRoom(Constants.DEFAULT_GAME_ROOM).getGame().getState());
     }
 
-    private PlayerConnections getConnections(String sessionId) {
-        return sessionManagementService.getSessionSafe(sessionId).getPlayerConnections();
+    private PlayerConnections getPlayerConnections(String gameRoomId) {
+        return gameRoomManagementService.getGameRoom(gameRoomId).getPlayerConnections();
     }
 }

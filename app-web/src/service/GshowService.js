@@ -93,9 +93,9 @@ class GshowService {
 const service = new GshowService();
 
 // Uncomment this for polling-based implementation
-// service.startPolling();
+service.startPolling();
 
 // Uncomment this for SSE-based implementation
-service.startListening();
+// service.startListening();
 
 export default service;

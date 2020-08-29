@@ -8,26 +8,26 @@ import hoyley.gshow.model.state.StateFacade;
 import java.util.Objects;
 import java.util.UUID;
 
-public class SessionService {
+public class GameRoomService {
 
-    private final String sessionKey;
+    private final String gameRoomKey;
     private final String adminSecretKey;
     private final GameService gameService;
     private final StateFacade state;
     private final PlayerConnections playerConnections = new PlayerConnections();
 
-    public SessionService(String sessionKey,
-                          StateFacade state,
-                          String adminKey,
-                          GameService gameService) {
-        this.sessionKey = sessionKey;
+    public GameRoomService(String gameRoomKey,
+                           StateFacade state,
+                           String adminKey,
+                           GameService gameService) {
+        this.gameRoomKey = gameRoomKey;
         this.adminSecretKey = adminKey;
         this.gameService = gameService;
         this.state = state;
     }
 
-    public String getSessionKey() {
-        return sessionKey;
+    public String getGameRoomKey() {
+        return gameRoomKey;
     }
 
     public GameService getGame() {

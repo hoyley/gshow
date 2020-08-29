@@ -1,12 +1,14 @@
 package hoyley.gshow.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import lombok.experimental.Wither;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.With;
 
 @Builder(toBuilder = true)
 @Getter
-@Wither
+@With
 public class Player {
 
     @NonNull private String id;

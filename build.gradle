@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.2.RELEASE'
+		springBootVersion = '2.2.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -17,22 +17,18 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'hoyle'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.9'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
-}
-
-ext {
-	set('springStatemachineVersion', '2.0.1.RELEASE')
 }
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-data-rest')
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-	compileOnly 'org.projectlombok:lombok:1.18.4'
-	annotationProcessor 'org.projectlombok:lombok:1.18.4'
+	compileOnly 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.12'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 }

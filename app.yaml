@@ -1,0 +1,7 @@
+runtime: java11
+env: standard
+service: spot-on
+
+handlers:
+  - url: /.*
+    script: this field is required, but ignored
