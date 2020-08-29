@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class ServerConfig {
-    @Value( "${server.sse}" )
+    @Value( "${server.config.sse}" )
     private boolean serverSentEvents;
+
+    @Value( "${server.config.statePollWaitMillis}" )
+    private int statePollWaitMillis;
 }

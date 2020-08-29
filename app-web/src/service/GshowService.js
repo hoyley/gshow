@@ -11,8 +11,8 @@ class GshowService {
     this.instanceKey = uuid.v4();
   }
 
-  startPolling() {
-    setInterval(() => this.refresh(), 200);
+  startPolling(delayMillis=200) {
+    setInterval(() => this.refresh(), delayMillis);
   }
 
   startListening() {
@@ -102,7 +102,7 @@ service.configuration().then(config => {
     service.startListening();
   } else {
     console.log("Polling is configured.")
-    service.startPolling();
+    service.startPolling(config.statePollWaitMillis);
   }
 }).catch(err => console.log(err));
 

@@ -35,7 +35,7 @@ export default class extends Component {
         {
           players.length > 0 &&
             <div>
-              <h2 className="title">Active Centrons</h2>
+              <h2 className="title">Active Players</h2>
               <ListGroup>{playerList}</ListGroup>
             </div>
         }

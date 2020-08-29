@@ -1,14 +1,23 @@
 # gshow
 
 GShow (GameShow) is a multiple choice trivia game. Multiple players can connect via a web browser on a computer or phone
-to compete. Players are awarded more points for answering sooner and are penalized for incorrect answers.
+to compete. Players are awarded more points for answering sooner and are not penalized for incorrect answers.
 
 The game supports OpenTriviaDB JSON format and a custom format with more features. One such feature is image support in 
 questions, although currently images have to live on the host domain.
 
 The game is built in Java on the backend and React on the front end. Currently the game only supports a single server as
 sessions are managed in server memory. Spring is used on the Java backend and both ServerSentEvents or polling is 
-possible (although hardcoded and not configurable at this point). The default is ServerSentEvents.
+possible. This can be configured through the `server.config.sse` application property. Server sent events doesn't work
+on every server (not supported on GCloud).
+
+![Desktop During Round](./readme-files/desktop-during-round.png)
+
+![Desktop After Round](./readme-files/desktop-after-round.png)
+
+![Phone During Round](./readme-files/phone-during-round.jpg)
+
+![Phone After Round](./readme-files/phone-after-round.jpg)
 
 ## Installation
 

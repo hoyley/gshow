@@ -43,7 +43,7 @@ public class StateFacade {
         synchronized (this) {
             state = state.withRegisteredPlayers(
                 state.getRegisteredPlayers().stream()
-                    .map(player -> Objects.equals(player.getSessionId(), playerId)
+                    .map(player -> Objects.equals(player.getId(), playerId)
                             ? player.withScore(player.getScore() + points)
                             : player)
                     .collect(Collectors.toList())
