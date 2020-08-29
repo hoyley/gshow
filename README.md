@@ -11,10 +11,12 @@ sessions are managed in server memory. Spring is used on the Java backend and bo
 possible. This can be configured through the `server.config.sse` application property. Server sent events doesn't work
 on every server (not supported on GCloud).
 
+## Desktop
 ![Desktop During Round](./readme-files/desktop-during-round.png)
 
 ![Desktop After Round](./readme-files/desktop-after-round.png)
 
+## Phone
 ![Phone During Round](./readme-files/phone-during-round.jpg)
 
 ![Phone After Round](./readme-files/phone-after-round.jpg)
