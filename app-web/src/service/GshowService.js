@@ -64,7 +64,6 @@ class GshowService {
   myPlayer() {
     return fetch(this.rootPath + '/myPlayer')
       .then(d => d.json())
-      .catch((e) => {})
   }
 
   choiceGameAnswer(choice) {
@@ -88,14 +87,24 @@ class GshowService {
       method: 'post'
     });
   }
+
+  configuration() {
+    return fetch(this.rootPath + '/config')
+      .then(d => d.json());
+  }
 };
 
 const service = new GshowService();
 
-// Uncomment this for polling-based implementation
-service.startPolling();
+service.configuration().then(config => {
+  if (config.serverSentEvents) {
+    console.log("Server sent events is configured.")
+    service.startListening();
+  } else {
+    console.log("Polling is configured.")
+    service.startPolling();
+  }
+}).catch(err => console.log(err));
 
-// Uncomment this for SSE-based implementation
-// service.startListening();
 
 export default service;
