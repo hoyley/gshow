@@ -1,5 +1,7 @@
 # gshow
 
+This project was created to host a trivia night at my work. It is not under active develpment.
+
 GShow (GameShow) is a multiple choice trivia game. Multiple players can connect via a web browser on a computer or phone
 to compete. Players are awarded more points for answering sooner and are not penalized for incorrect answers.
 
