@@ -1,0 +1,5 @@
+/app-native
+/app-web/node-modules
+/app-web/build
+/bin
+/build
