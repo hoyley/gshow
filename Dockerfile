@@ -14,4 +14,5 @@ FROM openjdk:12-alpine
 EXPOSE 8080
 RUN mkdir /app
 COPY --from=server-build /build/server/build/libs/*.jar /app/app.jar
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+ENV PORT 8080 
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dserver.port=${PORT}", "-jar","/app/app.jar"]
