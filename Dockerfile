@@ -1,8 +1,8 @@
 FROM node:14.11.0-slim AS web-build
 COPY ./app-web /build/web
 WORKDIR /build/web
-RUN npm install \
-    npm run build
+RUN npm install
+RUN npm run build
 
 FROM gradle:6.6.1-jdk11 AS server-build
 COPY --chown=gradle:gradle . /build/server
